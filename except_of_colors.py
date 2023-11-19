@@ -7,7 +7,7 @@ from natsort import natsorted
 from skimage import color, filters
 
 
-def except_of_blue(img):
+def except_of_rybg(img):
   # Convert the image to grayscale
   gray_image = color.rgb2gray(img)
   # Apply a Gaussian filter to smooth the image
@@ -16,13 +16,13 @@ def except_of_blue(img):
   blue_mask = (img[:, :, 2] > 100) & (img[:, :, 1] < 150) & (img[:, :, 0] < 150)
   yellow_mask = (img[:, :, 2] > 150) & (img[:, :, 1] > 150) & (img[:, :, 0] < 150)
   red_mask = (img[:, :, 2] < 150) & (img[:, :, 1] < 150) & (img[:, :, 0] > 150)
-  green_mask = (img[:, :, 1] > 100) & (img[:, :, 0] < 100) & (img[:, :, 2] < 100)
+  green_mask = (img[:, :, 2] < 100) & (img[:, :, 1] > 50) & (img[:, :, 0] < 150)
   # Combine the masks
   combined_mask = blue_mask | yellow_mask | red_mask | green_mask
   # Create an masked image with white background
-  masked_image = np.ones_like(img1) * 255
+  masked_image = np.ones_like(img) * 255
   # Set the blue regions to the original color in the output image
-  masked_image[combined_mask] = img1[combined_mask]
+  masked_image[combined_mask] = img[combined_mask]
 
   # Define a threshold for identifying gray regions (adjust as needed)
   gray_threshold = 0.3
@@ -45,9 +45,10 @@ for filename in list_files:
   filename = os.path.join(folder_path, filename)
   image_list.append(ski.io.imread(filename))
 img1 = image_list[0]
+img2 = image_list[1]
 
 # Convert the image
-output_image = except_of_blue(img1)
+output_image = except_of_rybg(img1)
 
 # Define layout
 fig = plt.figure(figsize=(8, 5))
