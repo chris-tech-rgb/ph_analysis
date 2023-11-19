@@ -4,39 +4,33 @@ import numpy as np
 import os
 import skimage as ski
 
-from natsort import natsorted, ns
-from skimage import data, img_as_float
+from natsort import natsorted
+from skimage import img_as_float
 from skimage import exposure
 
 
 matplotlib.rcParams['font.size'] = 8
 
 
-def plot_img_and_hist(image, axes, bins=256):
-    """Plot an image along with its histogram and cumulative histogram.
+def plot_img(image, axes, bins=256):
+    """Plot an image along with its contrast stretching.
 
     """
     image = img_as_float(image)
-    ax_img, ax_hist = axes
-    ax_cdf = ax_hist.twinx()
+    ax_img = axes[0]
+    ax_cont = axes[1]
 
     # Display image
     ax_img.imshow(image, cmap=plt.cm.gray)
     ax_img.set_axis_off()
 
-    # Display histogram
-    ax_hist.hist(image.ravel(), bins=bins, histtype='step', color='black')
-    ax_hist.ticklabel_format(axis='y', style='scientific', scilimits=(0, 0))
-    ax_hist.set_xlabel('Pixel intensity')
-    ax_hist.set_xlim(0, 1)
-    ax_hist.set_yticks([])
+    # Display contrast stretching
+    p2, p98 = np.percentile(image, (2, 98))
+    img_rescale = exposure.rescale_intensity(image, in_range=(p2, p98))
+    ax_cont.imshow(img_rescale, cmap=plt.cm.gray)
+    ax_cont.set_axis_off()
 
-    # Display cumulative distribution
-    img_cdf, bins = exposure.cumulative_distribution(image, bins)
-    ax_cdf.plot(bins, img_cdf, 'r')
-    ax_cdf.set_yticks([])
-
-    return ax_img, ax_hist, ax_cdf
+    return ax_img, ax_cont
 
 
 # Load example images
@@ -47,51 +41,24 @@ image_list = []
 for filename in list_files:
   filename = os.path.join(folder_path, filename)
   image_list.append(ski.io.imread(filename))
-img1 = image_list[0]
-
-# Contrast stretching
-p2, p98 = np.percentile(img1, (2, 98))
-img_rescale = exposure.rescale_intensity(img1, in_range=(p2, p98))
-
-# Equalization
-img_eq = exposure.equalize_hist(img1)
-
-# Adaptive Equalization
-img_adapteq = exposure.equalize_adapthist(img1, clip_limit=0.03)
+num = len(image_list)
 
 # Display results
 fig = plt.figure(figsize=(8, 5))
-axes = np.zeros((2, 4), dtype=object)
-axes[0, 0] = fig.add_subplot(2, 4, 1)
-for i in range(1, 4):
-    axes[0, i] = fig.add_subplot(2, 4, 1+i, sharex=axes[0,0], sharey=axes[0,0])
-for i in range(0, 4):
-    axes[1, i] = fig.add_subplot(2, 4, 5+i)
+axes = np.zeros((2, num), dtype=object)
+axes[0, 0] = fig.add_subplot(2, num, 1)
+for i in range(1, num):
+    axes[0, i] = fig.add_subplot(2, num, 1+i)
+for i in range(0, num):
+    axes[1, i] = fig.add_subplot(2, num, num+1+i)
 
-# Display low contrast image
-ax_img, ax_hist, ax_cdf = plot_img_and_hist(img1, axes[:, 0])
-ax_img.set_title('Low contrast image')
-
-# Set lable number of pixels
-y_min, y_max = ax_hist.get_ylim()
-ax_hist.set_ylabel('Number of pixels')
-ax_hist.set_yticks(np.linspace(0, y_max, 5))
-
-# Display contrast stretching
-ax_img, ax_hist, ax_cdf = plot_img_and_hist(img_rescale, axes[:, 1])
-ax_img.set_title('Contrast stretching')
-
-# Display histogram equalization
-ax_img, ax_hist, ax_cdf = plot_img_and_hist(img_eq, axes[:, 2])
-ax_img.set_title('Histogram equalization')
-
-# Display adaptive equalization
-ax_img, ax_hist, ax_cdf = plot_img_and_hist(img_adapteq, axes[:, 3])
-ax_img.set_title('Adaptive equalization')
-
-# Set label fraction of total intensity
-ax_cdf.set_ylabel('Fraction of total intensity')
-ax_cdf.set_yticks(np.linspace(0, 1, 5))
+# Display images
+counter = 0
+for img in image_list:
+    ax_img, ax_cont = plot_img(img, axes[:, counter])
+    ax_img.set_title('Original image')
+    ax_cont.set_title('Contrast stretching')
+    counter += 1
 
 # prevent overlap of y-axis labels
 fig.tight_layout()

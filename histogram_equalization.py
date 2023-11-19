@@ -4,8 +4,8 @@ import numpy as np
 import os
 import skimage as ski
 
-from natsort import natsorted, ns
-from skimage import data, img_as_float
+from natsort import natsorted
+from skimage import img_as_float
 from skimage import exposure
 
 
@@ -47,7 +47,7 @@ image_list = []
 for filename in list_files:
   filename = os.path.join(folder_path, filename)
   image_list.append(ski.io.imread(filename))
-img1 = image_list[0]
+img1 = image_list[1]
 
 # Contrast stretching
 p2, p98 = np.percentile(img1, (2, 98))
