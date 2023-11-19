@@ -67,3 +67,32 @@ for i in range(1, 4):
     axes[0, i] = fig.add_subplot(2, 4, 1+i, sharex=axes[0,0], sharey=axes[0,0])
 for i in range(0, 4):
     axes[1, i] = fig.add_subplot(2, 4, 5+i)
+
+# Display low contrast image
+ax_img, ax_hist, ax_cdf = plot_img_and_hist(img1, axes[:, 0])
+ax_img.set_title('Low contrast image')
+
+# Set lable number of pixels
+y_min, y_max = ax_hist.get_ylim()
+ax_hist.set_ylabel('Number of pixels')
+ax_hist.set_yticks(np.linspace(0, y_max, 5))
+
+# Display contrast stretching
+ax_img, ax_hist, ax_cdf = plot_img_and_hist(img_rescale, axes[:, 1])
+ax_img.set_title('Contrast stretching')
+
+# Display histogram equalization
+ax_img, ax_hist, ax_cdf = plot_img_and_hist(img_eq, axes[:, 2])
+ax_img.set_title('Histogram equalization')
+
+# Display adaptive equalization
+ax_img, ax_hist, ax_cdf = plot_img_and_hist(img_adapteq, axes[:, 3])
+ax_img.set_title('Adaptive equalization')
+
+# Set label fraction of total intensity
+ax_cdf.set_ylabel('Fraction of total intensity')
+ax_cdf.set_yticks(np.linspace(0, 1, 5))
+
+# prevent overlap of y-axis labels
+fig.tight_layout()
+plt.show()
