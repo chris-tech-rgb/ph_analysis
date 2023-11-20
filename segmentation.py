@@ -192,35 +192,57 @@ def fourth_grid(img):
   return final_grid
 
 def display_segmentation(img, image_name):
-  """Display the result of segmentation."""
+  """Display the result of segmentation and the RGB value of each segment."""
   # Remove background
   processed_image = remove_background(img, mask_without_background(img))
   # Segmentation
-  segmentation1 = first_grid(processed_image)
-  segmentation2 = second_grid(processed_image)
-  segmentation3 = third_grid(processed_image)
-  segmentation4 = fourth_grid(processed_image)
+  segments = [None] * 4
+  segments[0] = first_grid(processed_image)
+  segments[1] = second_grid(processed_image)
+  segments[2] = third_grid(processed_image)
+  segments[3] = fourth_grid(processed_image)
   # Display the image
   fig = plt.figure(figsize=(8, 8))
-  axes = np.zeros((1, 5), dtype=object)
+  axes = np.zeros((2, 5), dtype=object)
   for i in range(0, 5):
-    axes[0, i] = fig.add_subplot(1, 5, 1+i)
+    axes[0, i] = fig.add_subplot(2, 5, 1+i)
     axes[0, i].axis("off")
+  axes[1, 0] = fig.add_subplot(2, 1, 2)
   # Show processed image
   axes[0, 0].imshow(processed_image)
   axes[0, 0].set_title(image_name)
   # Show segmentation 1
-  axes[0, 1].imshow(segmentation1)
+  axes[0, 1].imshow(segments[0])
   axes[0, 1].set_title(image_name+" (1)")
   # Show segmentation 2
-  axes[0, 2].imshow(segmentation2)
+  axes[0, 2].imshow(segments[1])
   axes[0, 2].set_title(image_name+" (2)")
   # Show segmentation 3
-  axes[0, 3].imshow(segmentation3)
+  axes[0, 3].imshow(segments[2])
   axes[0, 3].set_title(image_name+" (3)")
   # Show segmentation 4
-  axes[0, 4].imshow(segmentation4)
+  axes[0, 4].imshow(segments[3])
   axes[0, 4].set_title(image_name+" (4)")
+  # Show RGB values
+  number = np.array([1, 2, 3, 4, 5])
+  rgb = [average_rgb(i) for i in [processed_image]+segments]
+  # Show values of R
+  red = np.array([i[0] for i in rgb])
+  p1 = axes[1, 0].plot(number, red, color="red", marker="o")
+  for a,b in zip(number, red): 
+    axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="red")
+  # Show values of G
+  green = np.array([i[1] for i in rgb])
+  p2 = axes[1, 0].plot(number, green, color="green", marker="D")
+  for a,b in zip(number, green): 
+    axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="green")
+  # Show values of B
+  blue = np.array([i[2] for i in rgb])
+  p3 = axes[1, 0].plot(number, blue, color="blue", marker="s")
+  for a,b in zip(number, blue): 
+    axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="blue")
+  # Add legends
+  axes[1, 0].legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='center left', bbox_to_anchor=(1, 0.5))
   plt.show()
 
 def load_images(folder_name):
