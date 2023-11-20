@@ -32,11 +32,12 @@ def remove_background(img, preliminary_mask):
   # Find the areas of the objects
   objects = ski.measure.regionprops(labeled_image)
   object_areas = [obj["area"] for obj in objects]
-  fourth_largest = np.partition(object_areas, -4)[-4]
-  # Remove small objects
-  small_objects =[obj for obj in objects if obj.area<fourth_largest]
-  for i in small_objects:
-    labeled_image[i.bbox[0]:i.bbox[2], i.bbox[1]:i.bbox[3]]=0
+  if len(object_areas) > 3:
+    fourth_largest = np.partition(object_areas, -4)[-4]
+    # Remove small objects
+    small_objects =[obj for obj in objects if obj.area<fourth_largest]
+    for i in small_objects:
+      labeled_image[i.bbox[0]:i.bbox[2], i.bbox[1]:i.bbox[3]]=0
   # Final mask
   final_mask = labeled_image > 0
   # Output
@@ -112,7 +113,7 @@ def comparison(imgs):
   plt.show()
 
 def main():
-  image_dict = load_images('images')
+  image_dict = load_images('test images')
   comparison(image_dict)
 
 
