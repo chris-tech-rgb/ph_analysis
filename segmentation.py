@@ -207,22 +207,13 @@ def display_segmentation(img, image_name):
   for i in range(0, 5):
     axes[0, i] = fig.add_subplot(2, 5, 1+i)
     axes[0, i].axis("off")
+    if i != 0:
+      axes[0, i].imshow(segments[i-1])
+      axes[0, i].set_title(image_name+" ("+str(i)+")")
   axes[1, 0] = fig.add_subplot(2, 1, 2)
   # Show processed image
   axes[0, 0].imshow(processed_image)
   axes[0, 0].set_title(image_name)
-  # Show segmentation 1
-  axes[0, 1].imshow(segments[0])
-  axes[0, 1].set_title(image_name+" (1)")
-  # Show segmentation 2
-  axes[0, 2].imshow(segments[1])
-  axes[0, 2].set_title(image_name+" (2)")
-  # Show segmentation 3
-  axes[0, 3].imshow(segments[2])
-  axes[0, 3].set_title(image_name+" (3)")
-  # Show segmentation 4
-  axes[0, 4].imshow(segments[3])
-  axes[0, 4].set_title(image_name+" (4)")
   # Show RGB values
   number = np.array([1, 2, 3, 4, 5])
   rgb = [average_rgb(i) for i in [processed_image]+segments]
