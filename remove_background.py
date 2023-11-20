@@ -42,7 +42,7 @@ def remove_all_background(img, preliminary_mask):
   return output_image
 
 
-# Load the example image
+# Load the images
 folder_path = os.path.join(os.getcwd(), 'images')
 filename = os.path.join(folder_path, '2.jpg')
 image = ski.io.imread(filename)
@@ -50,7 +50,7 @@ image = ski.io.imread(filename)
 output_image = remove_all_background(image, mask_without_background(image))
 
 # Display the image
-plt.figure(figsize=(8, 8))
+plt.figure(figsize=(8, 5))
 plt.imshow(output_image)
 plt.axis("off")
 plt.show()
