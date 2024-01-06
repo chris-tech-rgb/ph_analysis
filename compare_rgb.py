@@ -4,13 +4,14 @@ import numpy as np
 import os
 import re
 import skimage as ski
+import scipy.ndimage as nd
 
 
 def mask_without_background(img):
   """Get a mask of the background."""
   elevation_map = ski.filters.sobel(img)
   elevation_map = (elevation_map * 255).astype(np.uint8)
-  green_mask = (elevation_map[:, :, 2] < 100) & (elevation_map[:, :, 1] > 9) & (elevation_map[:, :, 0] < 150)
+  green_mask = (elevation_map[:, :, 2] < 100) & (elevation_map[:, :, 1] > 12) & (elevation_map[:, :, 0] < 150)
   masked_image = np.ones_like(img) * 255
   masked_image[green_mask] = img[green_mask]
   return masked_image
@@ -29,17 +30,19 @@ def remove_background(img, preliminary_mask):
   binary_mask_image[binary_mask] = 0
   # Label the objects
   labeled_image, _ = ski.measure.label(binary_mask, return_num=True)
-  # Find the areas of the objects
+  # Get the areas of the objects to remove small objects
   objects = ski.measure.regionprops(labeled_image)
   object_areas = [obj["area"] for obj in objects]
-  if len(object_areas) > 3:
-    fourth_largest = np.partition(object_areas, -4)[-4]
+  if len(object_areas) > 2:
+    third_largest = np.partition(object_areas, -3)[-3]
     # Remove small objects
-    small_objects =[obj for obj in objects if obj.area<fourth_largest]
+    small_objects =[obj for obj in objects if obj.area<third_largest]
     for i in small_objects:
       labeled_image[i.bbox[0]:i.bbox[2], i.bbox[1]:i.bbox[3]]=0
+  # Fill holes
+  solid_labels = nd.binary_fill_holes(labeled_image).astype(int)
   # Final mask
-  final_mask = labeled_image > 0
+  final_mask = solid_labels > 0
   # Output
   output_image = np.ones_like(img) * 255
   output_image[final_mask] = img[final_mask]
