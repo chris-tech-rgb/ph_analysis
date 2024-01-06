@@ -10,7 +10,7 @@ def mask_without_background(img):
   """Get a mask of the background."""
   elevation_map = ski.filters.sobel(img)
   elevation_map = (elevation_map * 255).astype(np.uint8)
-  green_mask = (elevation_map[:, :, 2] < 100) & (elevation_map[:, :, 1] > 20) & (elevation_map[:, :, 0] < 150)
+  green_mask = (elevation_map[:, :, 2] < 100) & (elevation_map[:, :, 1] > 9) & (elevation_map[:, :, 0] < 150)
   masked_image = np.ones_like(img) * 255
   masked_image[green_mask] = img[green_mask]
   return masked_image
@@ -21,8 +21,8 @@ def remove_background(img, preliminary_mask):
   gray_image = ski.color.rgb2gray(preliminary_mask)
   # Denoise the image
   blurred_image = ski.filters.gaussian(gray_image, sigma=4)
-  # Apply a threshold of 0.7 to the image
-  threshold = 0.7
+  # Apply a threshold of 0.8 to the image
+  threshold = 0.8
   binary_mask = blurred_image < threshold
   # Create an all zero values array with the same shape as our binary mask
   binary_mask_image = np.ones_like(img) * 255
@@ -32,11 +32,12 @@ def remove_background(img, preliminary_mask):
   # Find the areas of the objects
   objects = ski.measure.regionprops(labeled_image)
   object_areas = [obj["area"] for obj in objects]
-  fourth_largest = np.partition(object_areas, -4)[-4]
-  # Remove small objects
-  small_objects =[obj for obj in objects if obj.area<fourth_largest]
-  for i in small_objects:
-    labeled_image[i.bbox[0]:i.bbox[2], i.bbox[1]:i.bbox[3]]=0
+  if len(object_areas) > 3:
+    fourth_largest = np.partition(object_areas, -4)[-4]
+    # Remove small objects
+    small_objects =[obj for obj in objects if obj.area<fourth_largest]
+    for i in small_objects:
+      labeled_image[i.bbox[0]:i.bbox[2], i.bbox[1]:i.bbox[3]]=0
   # Final mask
   final_mask = labeled_image > 0
   # Output
@@ -88,7 +89,7 @@ def comparison(imgs):
     axes[0, i].set_title(image_names[i])
   axes[1, 0] = fig.add_subplot(2, 1, 2)
   # Show RGB values
-  number = np.array([int(re.findall(r'\d+', i)[0]) for i in image_names])
+  number = np.array([float(re.findall(r'\d+\.\d+', i)[0]) for i in image_names])
   rgb = []
   for i in image_names:
     rgb.append(average_rgb(processed_images[i]))
@@ -112,7 +113,7 @@ def comparison(imgs):
   plt.show()
 
 def main():
-  image_dict = load_images('images')
+  image_dict = load_images('ph test')
   comparison(image_dict)
 
 

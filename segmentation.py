@@ -9,7 +9,7 @@ def mask_without_background(img):
   """Get a mask of the background."""
   elevation_map = ski.filters.sobel(img)
   elevation_map = (elevation_map * 255).astype(np.uint8)
-  green_mask = (elevation_map[:, :, 2] < 100) & (elevation_map[:, :, 1] > 20) & (elevation_map[:, :, 0] < 150)
+  green_mask = (elevation_map[:, :, 2] < 100) & (elevation_map[:, :, 1] > 18) & (elevation_map[:, :, 0] < 150)
   masked_image = np.ones_like(img) * 255
   masked_image[green_mask] = img[green_mask]
   return masked_image
@@ -21,7 +21,7 @@ def remove_background(img, preliminary_mask):
   # Denoise the image
   blurred_image = ski.filters.gaussian(gray_image, sigma=4)
   # Apply a threshold of 0.7 to the image
-  threshold = 0.7
+  threshold = 0.8
   binary_mask = blurred_image < threshold
   # Create an all zero values array with the same shape as our binary mask
   binary_mask_image = np.ones_like(img) * 255
@@ -48,7 +48,7 @@ def first_grid(img):
   # Turn the image to grayscale
   gray_image = ski.color.rgb2gray(img)
   # Apply a threshold of 0.7 to the image
-  threshold = 0.7
+  threshold = 0.8
   binary_mask = gray_image < threshold
   # Create an all zero values array with the same shape as our binary mask
   binary_mask_image = np.ones_like(img) * 255
@@ -85,7 +85,7 @@ def second_grid(img):
   # Turn the image to grayscale
   gray_image = ski.color.rgb2gray(img)
   # Apply a threshold of 0.7 to the image
-  threshold = 0.7
+  threshold = 0.8
   binary_mask = gray_image < threshold
   # Create an all zero values array with the same shape as our binary mask
   binary_mask_image = np.ones_like(img) * 255
@@ -122,7 +122,7 @@ def third_grid(img):
   # Turn the image to grayscale
   gray_image = ski.color.rgb2gray(img)
   # Apply a threshold of 0.7 to the image
-  threshold = 0.7
+  threshold = 0.8
   binary_mask = gray_image < threshold
   # Create an all zero values array with the same shape as our binary mask
   binary_mask_image = np.ones_like(img) * 255
@@ -159,7 +159,7 @@ def fourth_grid(img):
   # Turn the image to grayscale
   gray_image = ski.color.rgb2gray(img)
   # Apply a threshold of 0.7 to the image
-  threshold = 0.7
+  threshold = 0.8
   binary_mask = gray_image < threshold
   # Create an all zero values array with the same shape as our binary mask
   binary_mask_image = np.ones_like(img) * 255
@@ -185,6 +185,7 @@ def fourth_grid(img):
   other_objects = [obj for obj in sorted_objects[:3]]
   for i in other_objects:
     labeled_img[i.bbox[0]:i.bbox[2], i.bbox[1]:i.bbox[3]]=0
+
   # Final mask
   final_mask = labeled_img > 0
   final_grid = np.ones_like(img) * 255
