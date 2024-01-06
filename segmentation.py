@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 from natsort import natsorted
 import numpy as np
 import os
+import scipy.ndimage as nd
 import skimage as ski
 
 
@@ -36,8 +37,10 @@ def remove_background(img, preliminary_mask):
   small_objects =[obj for obj in objects if obj.area<fourth_largest]
   for i in small_objects:
     labeled_image[i.bbox[0]:i.bbox[2], i.bbox[1]:i.bbox[3]]=0
+  # Fill holes
+  solid_labels = nd.binary_fill_holes(labeled_image).astype(int)
   # Final mask
-  final_mask = labeled_image > 0
+  final_mask = solid_labels > 0
   # Output
   output_image = np.ones_like(img) * 255
   output_image[final_mask] = img[final_mask]
@@ -74,8 +77,10 @@ def first_grid(img):
   other_objects = [obj for obj in sorted_objects[1:]]
   for i in other_objects:
     labeled_img[i.bbox[0]:i.bbox[2], i.bbox[1]:i.bbox[3]]=0
+  # Fill holes
+  solid_labels = nd.binary_fill_holes(labeled_img).astype(int)
   # Final mask
-  final_mask = labeled_img > 0
+  final_mask = solid_labels > 0
   final_grid = np.ones_like(img) * 255
   final_grid[final_mask] = img[final_mask]
   return final_grid
@@ -111,8 +116,10 @@ def second_grid(img):
   other_objects = [sorted_objects[0]] + [obj for obj in sorted_objects[2:]]
   for i in other_objects:
     labeled_img[i.bbox[0]:i.bbox[2], i.bbox[1]:i.bbox[3]]=0
+  # Fill holes
+  solid_labels = nd.binary_fill_holes(labeled_img).astype(int)
   # Final mask
-  final_mask = labeled_img > 0
+  final_mask = solid_labels > 0
   final_grid = np.ones_like(img) * 255
   final_grid[final_mask] = img[final_mask]
   return final_grid
@@ -148,8 +155,10 @@ def third_grid(img):
   other_objects = [sorted_objects[3]] + [obj for obj in sorted_objects[:2]]
   for i in other_objects:
     labeled_img[i.bbox[0]:i.bbox[2], i.bbox[1]:i.bbox[3]]=0
+  # Fill holes
+  solid_labels = nd.binary_fill_holes(labeled_img).astype(int)
   # Final mask
-  final_mask = labeled_img > 0
+  final_mask = solid_labels > 0
   final_grid = np.ones_like(img) * 255
   final_grid[final_mask] = img[final_mask]
   return final_grid
@@ -185,9 +194,10 @@ def fourth_grid(img):
   other_objects = [obj for obj in sorted_objects[:3]]
   for i in other_objects:
     labeled_img[i.bbox[0]:i.bbox[2], i.bbox[1]:i.bbox[3]]=0
-
+  # Fill holes
+  solid_labels = nd.binary_fill_holes(labeled_img).astype(int)
   # Final mask
-  final_mask = labeled_img > 0
+  final_mask = solid_labels > 0
   final_grid = np.ones_like(img) * 255
   final_grid[final_mask] = img[final_mask]
   return final_grid

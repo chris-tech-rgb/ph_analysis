@@ -3,8 +3,8 @@ from natsort import natsorted
 import numpy as np
 import os
 import re
-import skimage as ski
 import scipy.ndimage as nd
+import skimage as ski
 
 
 def mask_without_background(img):
@@ -36,9 +36,10 @@ def remove_background(img, preliminary_mask):
   if len(object_areas) > 2:
     third_largest = np.partition(object_areas, -3)[-3]
     # Remove small objects
-    small_objects =[obj for obj in objects if obj.area<third_largest]
-    for i in small_objects:
-      labeled_image[i.bbox[0]:i.bbox[2], i.bbox[1]:i.bbox[3]]=0
+    ski.morphology.remove_small_objects(labeled_image, int(third_largest))
+    #small_objects =[obj for obj in objects if obj.area<third_largest]
+    #for i in small_objects:
+    #  labeled_image[i.bbox[0]:i.bbox[2], i.bbox[1]:i.bbox[3]]=0
   # Fill holes
   solid_labels = nd.binary_fill_holes(labeled_image).astype(int)
   # Final mask
