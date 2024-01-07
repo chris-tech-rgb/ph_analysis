@@ -36,9 +36,9 @@ def remove_background(img, preliminary_mask):
   objects = ski.measure.regionprops(labeled_image)
   object_areas = [obj["area"] for obj in objects]
   if len(object_areas) > 2:
-    third_largest = np.partition(object_areas, -3)[-3]
+    largest = np.partition(object_areas, -1)[-1]
     # Remove small objects
-    small_objects =[obj for obj in objects if obj.area<third_largest]
+    small_objects =[obj for obj in objects if obj.area<largest]
     for i in small_objects:
       labeled_image[i.bbox[0]:i.bbox[2], i.bbox[1]:i.bbox[3]]=0
   # Fill holes
