@@ -271,7 +271,7 @@ def average_rgb(img):
     return average_rgb
 
 def main():
-  image_dict = load_images('images')
+  image_dict = load_images('test images 1')
   for i in image_dict:
     display_segmentation(image_dict[i], i)
 

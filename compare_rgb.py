@@ -91,7 +91,7 @@ def comparison(imgs):
     axes[0, i] = fig.add_subplot(2, number, 1+i)
     axes[0, i].axis("off")
     axes[0, i].imshow(processed_images[image_names[i]])
-    axes[0, i].set_title(image_names[i])
+    axes[0, i].set_title(image_names[i][:-4])
   axes[1, 0] = fig.add_subplot(2, 1, 2)
   # Show RGB values
   number = np.array([float(re.findall(r'\d+\.\d+', i)[0]) for i in image_names])
