@@ -1,3 +1,4 @@
+import csv
 import matplotlib.pyplot as plt
 from natsort import natsorted
 import numpy as np
@@ -94,28 +95,35 @@ def comparison(imgs):
     axes[0, i].set_title(image_names[i][:-4])
   axes[1, 0] = fig.add_subplot(2, 1, 2)
   # Show RGB values
-  number = np.array([float(re.findall(r'\d+\.\d+', i)[0]) for i in image_names])
+  pHs = np.array([float(re.findall(r'\d+\.\d+', i)[0]) for i in image_names])
   rgb = []
   for i in image_names:
     rgb.append(average_rgb(processed_images[i]))
   # Show values of R
   red = np.array([i[0] for i in rgb])
-  p1 = axes[1, 0].plot(number, red, color="red", marker="o")
-  for a,b in zip(number, red): 
+  p1 = axes[1, 0].plot(pHs, red, color="red", marker="o")
+  for a,b in zip(pHs, red): 
     axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="red")
   # Show values of G
   green = np.array([i[1] for i in rgb])
-  p2 = axes[1, 0].plot(number, green, color="green", marker="D")
-  for a,b in zip(number, green): 
+  p2 = axes[1, 0].plot(pHs, green, color="green", marker="D")
+  for a,b in zip(pHs, green): 
     axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="green")
   # Show values of B
   blue = np.array([i[2] for i in rgb])
-  p3 = axes[1, 0].plot(number, blue, color="blue", marker="s")
-  for a,b in zip(number, blue): 
+  p3 = axes[1, 0].plot(pHs, blue, color="blue", marker="s")
+  for a,b in zip(pHs, blue): 
     axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="blue")
   # Add legends
   axes[1, 0].legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='center left', bbox_to_anchor=(1, 0.5))
   plt.show()
+  # Save data
+  with open('ph test data.csv', 'w') as f:
+    writer = csv.writer(f)
+    writer.writerow(pHs)
+    writer.writerow([i[0] for i in rgb])
+    writer.writerow([i[1] for i in rgb])
+    writer.writerow([i[2] for i in rgb])
 
 def main():
   image_dict = load_images('ph test')

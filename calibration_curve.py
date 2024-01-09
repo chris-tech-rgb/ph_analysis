@@ -6,7 +6,7 @@ import numpy as np
 def func(rgb, a1, a2, b1, b2, c1, c2):
     return a1 * rgb[:, 0]**a2 + b1 * rgb[:, 1]**b2 + c1 * rgb[:, 2]**c2
  
-# Experimental data points    
+# Experimental data points
 pH_values = np.array([4.65, 5.50, 5.95, 6.40, 6.70, 7.00, 7.60, 8.00])
 rgb_values = np.array([[146.29, 135.73, 50.21],
                        [82.79, 106.04, 54.27],
