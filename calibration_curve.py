@@ -56,3 +56,8 @@ ax.tick_params(axis='z', colors='blue')
 ax.set_title(f"pH = {a1:.5f} × R^({a2:.5f}) + {b1:.5f} × G^({b2:.5f}) + {c1:.5f} × B^({c2:.5f})")
 # Show figure
 plt.show()
+
+# Save result
+with open('calibration curve.csv', 'w') as f:
+    writer = csv.writer(f)
+    writer.writerow(popt)
