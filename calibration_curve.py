@@ -33,11 +33,14 @@ g = rgb_values[:, 1]
 b = rgb_values[:, 2]
 ph = pH_values
 
-img = ax.scatter(r, g, b, c=ph, cmap=plt.hot())
-cb = fig.colorbar(img)
+img = ax.scatter(r, g, b, c=ph, cmap='viridis_r')
+cb = fig.colorbar(img, location = 'left')
 cb.set_label('pH')
 ax.set_xlabel('R')
+ax.xaxis.label.set_color('red')
 ax.set_ylabel('G')
+ax.yaxis.label.set_color('green')
 ax.set_zlabel('B')
+ax.zaxis.label.set_color('blue')
 ax.set_title('RGB to pH')
 plt.show()
