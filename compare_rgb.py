@@ -63,16 +63,16 @@ def load_images(folder_name):
   return image_dict
 
 def average_rgb(img):
-    """Get the average RGB of an image."""
-    # Create a mask for white regions
-    white_mask = np.all(img == [255, 255, 255], axis=-1)
-    # Invert the mask to select non-white regions
-    non_white_mask = ~white_mask
-    # Extract non-white pixels from the image
-    non_white_pixels = img[non_white_mask]
-    # Calculate the average RGB values for non-white regions
-    average_rgb = np.mean(non_white_pixels, axis=0)
-    return average_rgb
+  """Get the average RGB of an image."""
+  # Create a mask for white regions
+  white_mask = np.all(img == [255, 255, 255], axis=-1)
+  # Invert the mask to select non-white regions
+  non_white_mask = ~white_mask
+  # Extract non-white pixels from the image
+  non_white_pixels = img[non_white_mask]
+  # Calculate the average RGB values for non-white regions
+  average_rgb = np.mean(non_white_pixels, axis=0)
+  return average_rgb
 
 def comparison(imgs):
   """Display the result of comparison and the RGB value of each one."""
@@ -102,17 +102,17 @@ def comparison(imgs):
   # Show values of R
   red = np.array([i[0] for i in rgb])
   p1 = axes[1, 0].plot(pHs, red, color="red", marker="o")
-  for a,b in zip(pHs, red): 
+  for a, b in zip(pHs, red): 
     axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="red")
   # Show values of G
   green = np.array([i[1] for i in rgb])
   p2 = axes[1, 0].plot(pHs, green, color="green", marker="D")
-  for a,b in zip(pHs, green): 
+  for a, b in zip(pHs, green): 
     axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="green")
   # Show values of B
   blue = np.array([i[2] for i in rgb])
   p3 = axes[1, 0].plot(pHs, blue, color="blue", marker="s")
-  for a,b in zip(pHs, blue): 
+  for a, b in zip(pHs, blue): 
     axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="blue")
   # Add legends
   axes[1, 0].legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='center left', bbox_to_anchor=(1, 0.5))

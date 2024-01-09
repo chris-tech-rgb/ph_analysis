@@ -40,7 +40,7 @@ def plot_img_and_hist(image, axes, bins=256):
 
 
 # Load example images
-folder_path = os.path.join(os.getcwd(), 'images')
+folder_path = os.path.join(os.getcwd(), 'test images 1')
 list_files = os.listdir(folder_path)
 list_files = natsorted(list_files)
 image_list = []

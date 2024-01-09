@@ -61,16 +61,24 @@ def load_images(folder_name):
   return image_dict
 
 def average_rgb(img):
-    """Get the average RGB of an image."""
-    # Create a mask for white regions
-    white_mask = np.all(img == [255, 255, 255], axis=-1)
-    # Invert the mask to select non-white regions
-    non_white_mask = ~white_mask
-    # Extract non-white pixels from the image
-    non_white_pixels = img[non_white_mask]
-    # Calculate the average RGB values for non-white regions
-    average_rgb = np.mean(non_white_pixels, axis=0)
-    return average_rgb
+  """Get the average RGB of an image."""
+  # Create a mask for white regions
+  white_mask = np.all(img == [255, 255, 255], axis=-1)
+  # Invert the mask to select non-white regions
+  non_white_mask = ~white_mask
+  # Extract non-white pixels from the image
+  non_white_pixels = img[non_white_mask]
+  # Calculate the average RGB values for non-white regions
+  average_rgb = np.mean(non_white_pixels, axis=0)
+  return average_rgb
+
+def fitting_function(rgb):
+  """Fitting function"""
+  with open('calibration curve.csv') as f:
+    reader = csv.reader(f)
+    rows = [row for row in reader]
+  popt = [float(i) for i in rows[0]]
+  return popt[0] * rgb[0]**popt[1] + popt[2] * rgb[1]**popt[3] + popt[4] * rgb[2]**popt[5]
 
 def predict_pH(imgs):
   """Display the result."""
@@ -92,11 +100,34 @@ def predict_pH(imgs):
     axes[0, i].imshow(processed_images[image_names[i]])
     axes[0, i].set_title(image_names[i][:-4])
   axes[1, 0] = fig.add_subplot(2, 1, 2)
-  
+  # Show RGB values
+  rgb = []
+  for i in image_names:
+    rgb.append(average_rgb(processed_images[i]))
+  # Show values of R
+  red = np.array([i[0] for i in rgb])
+  axes[1, 0].plot(range(0, number), red, color="red", linestyle=":")
+  # Show values of G
+  green = np.array([i[1] for i in rgb])
+  axes[1, 0].plot(range(0, number), green, color="green", linestyle=":")
+  # Show values of B
+  blue = np.array([i[2] for i in rgb])
+  axes[1, 0].plot(range(0, number), blue, color="blue", linestyle=":")
+  # Hide x axis
+  axes[1, 0].axes.get_xaxis().set_visible(False)
+  # Y label
+  axes[1, 0].set_ylabel('RGB')
+  # Show predicted value of pH
+  axe_ph = axes[1, 0].twinx()
+  axe_ph.set_ylabel('Predicted pH')
+  pH = [fitting_function(i) for i in rgb]
+  axe_ph.plot(range(0, number), pH, 'r', color="purple", marker="*", linestyle=":")
+  for a, b in zip(range(0, number), pH): 
+    axe_ph.text(a, b + 0.5, "pH" + str("{:.2f}".format(b)), color="purple")
   plt.show()
 
 def main():
-  image_dict = load_images('ph test data')
+  image_dict = load_images('ph test')
   predict_pH(image_dict)
 
 
