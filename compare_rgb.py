@@ -121,9 +121,9 @@ def comparison(imgs):
   with open('ph test data.csv', 'w') as f:
     writer = csv.writer(f)
     writer.writerow(pHs)
-    writer.writerow([i[0] for i in rgb])
-    writer.writerow([i[1] for i in rgb])
-    writer.writerow([i[2] for i in rgb])
+    writer.writerow(["{:.2f}".format(i[0]) for i in rgb])
+    writer.writerow(["{:.2f}".format(i[1]) for i in rgb])
+    writer.writerow(["{:.2f}".format(i[2]) for i in rgb])
 
 def main():
   image_dict = load_images('ph test')

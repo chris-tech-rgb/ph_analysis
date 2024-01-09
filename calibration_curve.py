@@ -1,3 +1,4 @@
+import csv
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 import numpy as np
@@ -7,15 +8,11 @@ def func(rgb, a1, a2, b1, b2, c1, c2):
     return a1 * rgb[:, 0]**a2 + b1 * rgb[:, 1]**b2 + c1 * rgb[:, 2]**c2
  
 # Experimental data points
-pH_values = np.array([4.65, 5.50, 5.95, 6.40, 6.70, 7.00, 7.60, 8.00])
-rgb_values = np.array([[146.29, 135.73, 50.21],
-                       [82.79, 106.04, 54.27],
-                       [68.93, 94.55, 51.15],
-                       [40.13, 75.40, 48.58],
-                       [40.87, 80.64, 66.19],
-                       [28.64, 71.22, 72.75],
-                       [26.41, 60.29, 85.66],
-                       [16.36, 42.82, 73.87]])
+with open('ph test data.csv') as f:
+    reader = csv.reader(f)
+    rows = [row for row in reader]
+pH_values = np.array(rows[0])
+rgb_values = np.array([list(t) for t in list(zip([float(i) for i in rows[2]], [float(i) for i in rows[4]], [float(i) for i in rows[6]]))])
 r = rgb_values[:, 0]
 g = rgb_values[:, 1]
 b = rgb_values[:, 2]
@@ -41,7 +38,7 @@ img = ax.scatter(R, G, B, c=pH, cmap='viridis_r')
 
 # Colorbar
 colorbar = fig.colorbar(img, location='left')  # Set position to 'left'
-colorbar.set_label('pH Values')
+colorbar.set_label('pH')
 
 # Set labels
 ax.set_xlabel('R')
@@ -56,6 +53,6 @@ ax.tick_params(axis='x', colors='red')
 ax.tick_params(axis='y', colors='green')
 ax.tick_params(axis='z', colors='blue')
 # Set title
-ax.set_title('RGB to pH')
+ax.set_title(f"pH = {a1:.5f} × R^({a2:.5f}) + {b1:.5f} × G^({b2:.5f}) + {c1:.5f} × B^({c2:.5f})")
 # Show figure
 plt.show()
