@@ -126,7 +126,7 @@ def comparison(imgs):
     writer.writerow(["{:.2f}".format(i[2]) for i in rgb])
 
 def main():
-  image_dict = load_images('ph test')
+  image_dict = load_images('ph test data')
   comparison(image_dict)
 
 
