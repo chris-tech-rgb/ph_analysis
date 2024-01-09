@@ -28,19 +28,29 @@ print(func(rgb_values, a1, a2, b1, b2, c1, c2))
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
+# Set values
 r = rgb_values[:, 0]
 g = rgb_values[:, 1]
 b = rgb_values[:, 2]
 ph = pH_values
 
+# Create colorbar figure
 img = ax.scatter(r, g, b, c=ph, cmap='viridis_r')
 cb = fig.colorbar(img, location = 'left')
+# Set labels
 cb.set_label('pH')
 ax.set_xlabel('R')
-ax.xaxis.label.set_color('red')
 ax.set_ylabel('G')
-ax.yaxis.label.set_color('green')
 ax.set_zlabel('B')
+# Color of labels
+ax.xaxis.label.set_color('red')
+ax.yaxis.label.set_color('green')
 ax.zaxis.label.set_color('blue')
+# Color of axes
+ax.tick_params(axis='x', colors='red')
+ax.tick_params(axis='y', colors='green')
+ax.tick_params(axis='z', colors='blue')
+# Set title
 ax.set_title('RGB to pH')
+# Show figure
 plt.show()
