@@ -5,24 +5,6 @@ import os
 import scipy.ndimage as nd
 import skimage as ski
 from natsort import natsorted
-from scipy.optimize import curve_fit
- 
-# Fitting function
-def func(rgb, a1, a2, b1, b2, c1, c2):
-    return a1 * rgb[:, 0]**a2 + b1 * rgb[:, 1]**b2 + c1 * rgb[:, 2]**c2
-
-# Get the curve-fit
-def curve():
-    # Experimental data points
-    with open('ph test data.csv') as f:
-        reader = csv.reader(f)
-        rows = [row for row in reader]
-    pH_values = np.array(rows[0])
-    rgb_values = np.array([list(t) for t in list(zip([float(i) for i in rows[2]], [float(i) for i in rows[4]], [float(i) for i in rows[6]]))])
-    # Perform the curve-fit
-    popt, _ = curve_fit(func, rgb_values, pH_values, maxfev = 20000)
-    return popt
-    a1, a2, b1, b2, c1, c2 = popt
 
 def mask_without_background(img):
   """Get a mask of the background."""
