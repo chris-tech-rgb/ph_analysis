@@ -9,7 +9,7 @@ import skimage as ski
 
 
 def mask_without_background(img):
-  """Get a mask of the background."""
+  """Get a mask without the background."""
   elevation_map = ski.filters.sobel(img)
   elevation_map = (elevation_map * 255).astype(np.uint8)
   green_mask = (elevation_map[:, :, 2] < 100) & (elevation_map[:, :, 1] > 12) & (elevation_map[:, :, 0] < 150)
