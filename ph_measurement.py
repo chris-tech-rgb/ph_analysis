@@ -106,13 +106,13 @@ def predict_pH(imgs):
     rgb.append(average_rgb(processed_images[i]))
   # Show values of R
   red = np.array([i[0] for i in rgb])
-  axes[1, 0].plot(range(0, number), red, color="red", linestyle=":")
+  p1 = axes[1, 0].plot(range(0, number), red, color="red", marker=".", linestyle=":")
   # Show values of G
   green = np.array([i[1] for i in rgb])
-  axes[1, 0].plot(range(0, number), green, color="green", linestyle=":")
+  p2 = axes[1, 0].plot(range(0, number), green, color="green", marker="x", linestyle=":")
   # Show values of B
   blue = np.array([i[2] for i in rgb])
-  axes[1, 0].plot(range(0, number), blue, color="blue", linestyle=":")
+  p3 = axes[1, 0].plot(range(0, number), blue, color="blue", marker="+", linestyle=":")
   # Hide x axis
   axes[1, 0].axes.get_xaxis().set_visible(False)
   # Y label
@@ -124,6 +124,8 @@ def predict_pH(imgs):
   axe_ph.plot(range(0, number), pH, 'r', color="purple", marker="*", linestyle=":")
   for a, b in zip(range(0, number), pH): 
     axe_ph.text(a, b + 0.5, "pH" + str("{:.2f}".format(b)), color="purple")
+  # Add legends
+  axes[1, 0].legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='upper center', bbox_to_anchor=(0, 1.3))
   plt.show()
 
 def main():
