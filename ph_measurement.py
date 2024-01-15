@@ -123,13 +123,13 @@ def predict_pH(imgs):
   pH = [fitting_function(i) for i in rgb]
   axe_ph.plot(range(0, number), pH, 'r', color="purple", marker="*", linestyle=":")
   for a, b in zip(range(0, number), pH): 
-    axe_ph.text(a, b + 0.5, "pH" + str("{:.2f}".format(b)), color="purple")
+    axe_ph.text(a, b + 0.25, "pH" + str("{:.2f}".format(b)), color="purple")
   # Add legends
   axes[1, 0].legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='upper center', bbox_to_anchor=(0.05, 1.3))
   plt.show()
 
 def main():
-  image_dict = load_images('ph test 2')
+  image_dict = load_images('ph test 1')
   predict_pH(image_dict)
 
 
