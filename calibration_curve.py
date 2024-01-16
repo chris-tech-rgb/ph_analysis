@@ -4,8 +4,8 @@ from scipy.optimize import curve_fit
 import numpy as np
  
 # Fitting function
-def func(rgb, a1, a2, b1, b2, c1, c2):
-    return a1 * rgb[:, 0]**a2 + b1 * rgb[:, 1]**b2 + c1 * rgb[:, 2]**c2
+def func(rgb, a, n1, b, n2, c, n3):
+    return a * rgb[:, 0]**n1 + b * rgb[:, 1]**n2 + c * rgb[:, 2]**n3
  
 # Experimental data points
 with open('ph test data.csv') as f:
@@ -13,25 +13,25 @@ with open('ph test data.csv') as f:
     rows = [row for row in reader]
 pH_values = np.array(rows[0])
 rgb_values = np.array([list(t) for t in list(zip([float(i) for i in rows[2]], [float(i) for i in rows[4]], [float(i) for i in rows[6]]))])
-r = rgb_values[:, 0]
-g = rgb_values[:, 1]
-b = rgb_values[:, 2]
+r_values = rgb_values[:, 0]
+g_values = rgb_values[:, 1]
+b_values = rgb_values[:, 2]
 
 # Perform the curve-fit
 popt, pcov = curve_fit(func, rgb_values, pH_values, maxfev = 20000)
-a1, a2, b1, b2, c1, c2 = popt
-print("Fitting function:\npH = " + str(a1) + " x R^(" + str(a2) + ") + " + str(b1) + " x G^(" + str(b2) + ") + " + str(c1) + " x B^(" + str(c2) + ")")
+a, n1, b, n2, c, n3 = popt
+print("Fitting function:\npH = " + str(a) + " x R^(" + str(n1) + ") + " + str(b) + " x G^(" + str(n2) + ") + " + str(c) + " x B^(" + str(n3) + ")")
 
 # Create figure
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
 # Fitting
-r_fit = np.linspace(min(r), max(r), 30)
-g_fit = np.linspace(min(g), max(g), 30)
-b_fit = np.linspace(min(b), max(b), 30)
+r_fit = np.linspace(min(r_values), max(r_values), 30)
+g_fit = np.linspace(min(g_values), max(g_values), 30)
+b_fit = np.linspace(min(b_values), max(b_values), 30)
 R, G, B = np.meshgrid(r_fit, g_fit, b_fit)
-pH = a1 * R**a2 + b1 * G**b2 + c1 * B**c2
+pH = a * R**n1 + b * G**n2 + c * B**n3
 
 # Scatter plot
 img = ax.scatter(R, G, B, c=pH, cmap='viridis_r')
