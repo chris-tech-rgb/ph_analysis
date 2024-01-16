@@ -52,8 +52,6 @@ ax.zaxis.label.set_color('blue')
 ax.tick_params(axis='x', colors='red')
 ax.tick_params(axis='y', colors='green')
 ax.tick_params(axis='z', colors='blue')
-# Set title
-ax.set_title("pH corresponding to different RGB")
 # Show figure
 plt.show()
 
