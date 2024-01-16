@@ -20,7 +20,7 @@ b = rgb_values[:, 2]
 # Perform the curve-fit
 popt, pcov = curve_fit(func, rgb_values, pH_values, maxfev = 20000)
 a1, a2, b1, b2, c1, c2 = popt
-print("Calibration Curves:\npH = " + str(a1) + " × R^(" + str(a2) + ") + " + str(b1) + " × G^(" + str(b2) + ") + " + str(c1) + " × B^(" + str(c2) + ")")
+print("Fitting function:\npH = " + str(a1) + " x R^(" + str(a2) + ") + " + str(b1) + " x G^(" + str(b2) + ") + " + str(c1) + " x B^(" + str(c2) + ")")
 
 # Create figure
 fig = plt.figure()
@@ -53,7 +53,7 @@ ax.tick_params(axis='x', colors='red')
 ax.tick_params(axis='y', colors='green')
 ax.tick_params(axis='z', colors='blue')
 # Set title
-ax.set_title(f"pH = {a1:.5f} × R^({a2:.5f}) + {b1:.5f} × G^({b2:.5f}) + {c1:.5f} × B^({c2:.5f})")
+ax.set_title("pH corresponding to different RGB")
 # Show figure
 plt.show()
 
