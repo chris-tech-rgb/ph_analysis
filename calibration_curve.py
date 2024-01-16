@@ -27,9 +27,9 @@ fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
 # Fitting
-r_fit = np.linspace(min(r), max(r), 16)
-g_fit = np.linspace(min(g), max(g), 16)
-b_fit = np.linspace(min(b), max(b), 16)
+r_fit = np.linspace(min(r), max(r), 30)
+g_fit = np.linspace(min(g), max(g), 30)
+b_fit = np.linspace(min(b), max(b), 30)
 R, G, B = np.meshgrid(r_fit, g_fit, b_fit)
 pH = a1 * R**a2 + b1 * G**b2 + c1 * B**c2
 
