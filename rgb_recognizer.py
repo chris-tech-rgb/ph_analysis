@@ -1,13 +1,15 @@
 import csv
 import matplotlib.pyplot as plt
+from natsort import natsorted
 import numpy as np
 import os
+import re
 import scipy.ndimage as nd
 import skimage as ski
-from natsort import natsorted
+
 
 def mask_without_background(img):
-  """Get a mask of the background."""
+  """Get a mask without the background."""
   elevation_map = ski.filters.sobel(img)
   elevation_map = (elevation_map * 255).astype(np.uint8)
   green_mask = (elevation_map[:, :, 2] < 100) & (elevation_map[:, :, 1] > 12) & (elevation_map[:, :, 0] < 150)
@@ -70,18 +72,11 @@ def average_rgb(img):
   non_white_pixels = img[non_white_mask]
   # Calculate the average RGB values for non-white regions
   average_rgb = np.mean(non_white_pixels, axis=0)
-  return average_rgb
+  normalized_rgb = [i*100/255 for i in average_rgb]
+  return normalized_rgb
 
-def fitting_function(rgb):
-  """Fitting function"""
-  with open('calibration curve.csv') as f:
-    reader = csv.reader(f)
-    rows = [row for row in reader]
-  popt = [float(i) for i in rows[0]]
-  return popt[0] * rgb[0]**popt[1] + popt[2] * rgb[1]**popt[3] + popt[4] * rgb[2]**popt[5]
-
-def predict_pH(imgs):
-  """Display the result."""
+def comparison(imgs):
+  """Display the result of comparison and the RGB value of each one."""
   # Count number
   number = len(imgs)
   if number < 1:
@@ -101,36 +96,35 @@ def predict_pH(imgs):
     axes[0, i].set_title(image_names[i][:-4])
   axes[1, 0] = fig.add_subplot(2, 1, 2)
   # Show RGB values
+  pHs = np.array([float(re.findall(r'\d+\.\d+', i)[0]) for i in image_names])
   rgb = []
   for i in image_names:
     rgb.append(average_rgb(processed_images[i]))
   # Show values of R
   red = np.array([i[0] for i in rgb])
-  p1 = axes[1, 0].plot(range(0, number), red, color="red", marker=".", linestyle=":")
+  p1 = axes[1, 0].plot(pHs, red, color="red", marker="o")
   # Show values of G
   green = np.array([i[1] for i in rgb])
-  p2 = axes[1, 0].plot(range(0, number), green, color="green", marker="x", linestyle=":")
+  p2 = axes[1, 0].plot(pHs, green, color="green", marker="D")
   # Show values of B
   blue = np.array([i[2] for i in rgb])
-  p3 = axes[1, 0].plot(range(0, number), blue, color="blue", marker="+", linestyle=":")
-  # Hide x axis
-  axes[1, 0].axes.get_xaxis().set_visible(False)
-  # Y label
-  axes[1, 0].set_ylabel('RGB')
-  # Show predicted value of pH
-  axe_ph = axes[1, 0].twinx()
-  axe_ph.set_ylabel('pH')
-  pH = [fitting_function(i) for i in rgb]
-  axe_ph.plot(range(0, number), pH, 'r', color="purple", marker="*", linestyle=":")
-  for a, b in zip(range(0, number), pH): 
-    axe_ph.text(a, b + 0.25, "pH" + str("{:.2f}".format(b)), color="purple")
+  p3 = axes[1, 0].plot(pHs, blue, color="blue", marker="s")
+  # for a, b in zip(pHs, red): 
+  #   axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="red")
+  # for a, b in zip(pHs, green): 
+  #   axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="green")
+  # for a, b in zip(pHs, blue): 
+  #  axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="blue")
   # Add legends
-  axes[1, 0].legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='upper center', bbox_to_anchor=(0.05, 1.3))
+  axes[1, 0].legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='center left', bbox_to_anchor=(1, 0.5))
+  # axis label
+  axes[1, 0].set_ylabel('Percentage of RGB color (%)')
+  axes[1, 0].set_xlabel('pH')
   plt.show()
 
 def main():
-  image_dict = load_images('ph test 2')
-  predict_pH(image_dict)
+  image_dict = load_images('ph test 3')
+  comparison(image_dict)
 
 
 if __name__ == "__main__":
