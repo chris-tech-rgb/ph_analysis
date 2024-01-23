@@ -101,19 +101,19 @@ def comparison(imgs):
     rgb.append(average_rgb(processed_images[i]))
   # Show values of R
   red = np.array([i[0] for i in rgb])
-  p1 = axes[1, 0].plot(pHs, red, color="red", marker="o")
+  p1 = axes[1, 0].plot(pHs, red, color="lightcoral", marker="o")
   for a, b in zip(pHs, red): 
-    axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="red")
+    axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="lightcoral")
   # Show values of G
   green = np.array([i[1] for i in rgb])
-  p2 = axes[1, 0].plot(pHs, green, color="green", marker="D")
+  p2 = axes[1, 0].plot(pHs, green, color="yellowgreen", marker="D")
   for a, b in zip(pHs, green): 
-    axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="green")
+    axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="yellowgreen")
   # Show values of B
   blue = np.array([i[2] for i in rgb])
-  p3 = axes[1, 0].plot(pHs, blue, color="blue", marker="s")
+  p3 = axes[1, 0].plot(pHs, blue, color="cornflowerblue", marker="s")
   for a, b in zip(pHs, blue): 
-    axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="blue")
+    axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="cornflowerblue")
   # Add legends
   axes[1, 0].legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='center left', bbox_to_anchor=(1, 0.5))
   plt.show()
