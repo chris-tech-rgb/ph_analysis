@@ -102,13 +102,13 @@ def comparison(imgs):
     rgb.append(average_rgb(processed_images[i]))
   # Show values of R
   red = np.array([i[0] for i in rgb])
-  p1 = axes[1, 0].plot(pHs, red, color="red", marker="o")
+  p1 = axes[1, 0].plot(pHs, red, color="lightcoral", marker="o")
   # Show values of G
   green = np.array([i[1] for i in rgb])
-  p2 = axes[1, 0].plot(pHs, green, color="green", marker="D")
+  p2 = axes[1, 0].plot(pHs, green, color="yellowgreen", marker="D")
   # Show values of B
   blue = np.array([i[2] for i in rgb])
-  p3 = axes[1, 0].plot(pHs, blue, color="blue", marker="s")
+  p3 = axes[1, 0].plot(pHs, blue, color="cornflowerblue", marker="s")
   # for a, b in zip(pHs, red): 
   #   axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="red")
   # for a, b in zip(pHs, green): 
