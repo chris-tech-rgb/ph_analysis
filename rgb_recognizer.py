@@ -116,7 +116,7 @@ def comparison(imgs):
   # for a, b in zip(pHs, blue): 
   #  axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="blue")
   # Add legends
-  axes[1, 0].legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='center left', bbox_to_anchor=(1, 0.5))
+  axes[1, 0].legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='upper right')
   # axis label
   axes[1, 0].set_ylabel('Percentage of RGB color (%)')
   axes[1, 0].set_xlabel('pH')
