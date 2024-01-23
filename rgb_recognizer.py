@@ -1,4 +1,3 @@
-import csv
 import matplotlib.pyplot as plt
 from natsort import natsorted
 import numpy as np
@@ -6,6 +5,7 @@ import os
 import re
 import scipy.ndimage as nd
 import skimage as ski
+import statistics
 
 
 def mask_without_background(img):
@@ -62,7 +62,7 @@ def load_images(folder_name):
     image_dict[filename] = ski.io.imread(file_path)
   return image_dict
 
-def average_rgb(img):
+def get_rgb(img):
   """Get the average RGB of an image."""
   # Create a mask for white regions
   white_mask = np.all(img == [255, 255, 255], axis=-1)
@@ -73,7 +73,9 @@ def average_rgb(img):
   # Calculate the average RGB values for non-white regions
   average_rgb = np.mean(non_white_pixels, axis=0)
   normalized_rgb = [i*100/255 for i in average_rgb]
-  return normalized_rgb
+  # Calculate the standard deviation of each color
+  st_dev = [statistics.stdev([p[i]*20/255 for p in non_white_pixels]) for i in range(3)]
+  return normalized_rgb, st_dev
 
 def comparison(imgs):
   """Display the result of comparison and the RGB value of each one."""
@@ -98,23 +100,32 @@ def comparison(imgs):
   # Show RGB values
   pHs = np.array([float(re.findall(r'\d+\.\d+', i)[0]) for i in image_names])
   rgb = []
+  sd = []
   for i in image_names:
-    rgb.append(average_rgb(processed_images[i]))
-  # Show values of R
+    color, st_dev = get_rgb(processed_images[i])
+    rgb.append(color)
+    sd.append(st_dev)
+  # Plots and errorbars of R
   red = np.array([i[0] for i in rgb])
+  red_sd = [i[0] for i in sd]
   p1 = axes[1, 0].plot(pHs, red, color="lightcoral", marker="o")
-  # Show values of G
+  axes[1, 0].errorbar(pHs, red, red_sd, color="lightcoral", capsize=5)
+  # Plots and errorbars of G
   green = np.array([i[1] for i in rgb])
+  green_sd = [i[1] for i in sd]
   p2 = axes[1, 0].plot(pHs, green, color="yellowgreen", marker="D")
-  # Show values of B
+  axes[1, 0].errorbar(pHs, green, green_sd, color="yellowgreen", capsize=5)
+  # Plots and errorbars of B
   blue = np.array([i[2] for i in rgb])
+  blue_sd = [i[2] for i in sd]
   p3 = axes[1, 0].plot(pHs, blue, color="cornflowerblue", marker="s")
+  axes[1, 0].errorbar(pHs, blue, blue_sd, color="cornflowerblue", capsize=5)
   # for a, b in zip(pHs, red): 
-  #   axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="red")
+  #   axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="lightcoral")
   # for a, b in zip(pHs, green): 
-  #   axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="green")
+  #   axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="yellowgreen")
   # for a, b in zip(pHs, blue): 
-  #  axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="blue")
+  #  axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="cornflowerblue")
   # Add legends
   axes[1, 0].legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='upper right')
   # axis label

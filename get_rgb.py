@@ -62,7 +62,7 @@ def load_images(folder_name):
     image_dict[filename] = ski.io.imread(file_path)
   return image_dict
 
-def average_rgb(img):
+def get_rgb(img):
   """Get the average RGB of an image."""
   # Create a mask for white regions
   white_mask = np.all(img == [255, 255, 255], axis=-1)
@@ -98,20 +98,21 @@ def comparison(imgs):
   pHs = np.array([float(re.findall(r'\d+\.\d+', i)[0]) for i in image_names])
   rgb = []
   for i in image_names:
-    rgb.append(average_rgb(processed_images[i]))
-  # Show values of R
+    rgb.append(get_rgb(processed_images[i]))
+  # Plots of R
   red = np.array([i[0] for i in rgb])
   p1 = axes[1, 0].plot(pHs, red, color="lightcoral", marker="o")
-  for a, b in zip(pHs, red): 
-    axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="lightcoral")
-  # Show values of G
+  # Plots of G
   green = np.array([i[1] for i in rgb])
   p2 = axes[1, 0].plot(pHs, green, color="yellowgreen", marker="D")
-  for a, b in zip(pHs, green): 
-    axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="yellowgreen")
-  # Show values of B
+  # Plots of B
   blue = np.array([i[2] for i in rgb])
   p3 = axes[1, 0].plot(pHs, blue, color="cornflowerblue", marker="s")
+  # Show RGB values
+  for a, b in zip(pHs, red): 
+    axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="lightcoral")
+  for a, b in zip(pHs, green): 
+    axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="yellowgreen")
   for a, b in zip(pHs, blue): 
     axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="cornflowerblue")
   # Add legends
