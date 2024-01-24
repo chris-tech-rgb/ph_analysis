@@ -131,6 +131,7 @@ def comparison(imgs):
   # axis label
   axes[1, 0].set_ylabel('Percentage of RGB color (%)')
   axes[1, 0].set_xlabel('pH')
+  plt.style.use('seaborn-v0_8-whitegrid')
   plt.show()
 
 def main():
