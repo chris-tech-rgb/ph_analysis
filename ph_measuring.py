@@ -74,7 +74,7 @@ def average_rgb(img):
 
 def fitting_function(rgb):
   """Fitting function"""
-  with open('calibration curve.csv') as f:
+  with open('fitting curve.csv') as f:
     reader = csv.reader(f)
     rows = [row for row in reader]
   popt = [float(i) for i in rows[0]]
