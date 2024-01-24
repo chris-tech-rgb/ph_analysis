@@ -79,6 +79,7 @@ def get_rgb(img):
 
 def comparison(imgs):
   """Display the result of comparison and the RGB value of each one."""
+  plt.style.use('seaborn-v0_8-whitegrid')
   # Count number
   number = len(imgs)
   if number < 1:
@@ -131,7 +132,6 @@ def comparison(imgs):
   # axis label
   axes[1, 0].set_ylabel('Percentage of RGB color (%)')
   axes[1, 0].set_xlabel('pH')
-  axes[1, 0].style.use('seaborn-v0_8-whitegrid')
   plt.show()
 
 def main():
