@@ -79,7 +79,6 @@ def get_rgb(img):
 
 def comparison(imgs):
   """Display the result of comparison and the RGB value of each one."""
-  plt.style.use('seaborn-v0_8-whitegrid')
   # Count number
   number = len(imgs)
   if number < 1:
@@ -135,7 +134,7 @@ def comparison(imgs):
   plt.show()
 
 def main():
-  image_dict = load_images('overtime')
+  image_dict = load_images('ph test 3')
   comparison(image_dict)
 
 
