@@ -10,7 +10,7 @@ def mask_without_background(img):
   """Get a mask of the background."""
   elevation_map = ski.filters.sobel(img)
   elevation_map = (elevation_map * 255).astype(np.uint8)
-  green_mask = (elevation_map[:, :, 2] < 100) & (elevation_map[:, :, 1] > 12) & (elevation_map[:, :, 0] < 150)
+  green_mask = (elevation_map[:, :, 2] < 100) & (elevation_map[:, :, 1] > 15) & (elevation_map[:, :, 0] < 150)
   anti_green_mask = (img[:, :, 2] < 100) & (img[:, :, 1] > 70) & (img[:, :, 0] < 100)
   mask = green_mask | anti_green_mask
   masked_image = np.ones_like(img) * 255
@@ -121,7 +121,7 @@ def predict_pH(imgs):
   axe_ph = axes[1, 0].twinx()
   axe_ph.set_ylabel('pH')
   pH = [fitting_function(i) for i in rgb]
-  axe_ph.plot(range(0, number), pH, 'r', color="purple", marker="*", linestyle=":")
+  axe_ph.plot(range(0, number), pH, color="purple", marker="*")
   for a, b in zip(range(0, number), pH): 
     axe_ph.text(a, b + 0.25, "pH" + str("{:.2f}".format(b)), color="purple")
   # Add legends
@@ -129,7 +129,7 @@ def predict_pH(imgs):
   plt.show()
 
 def main():
-  image_dict = load_images('ph test 2')
+  image_dict = load_images('ph test 1')
   predict_pH(image_dict)
 
 

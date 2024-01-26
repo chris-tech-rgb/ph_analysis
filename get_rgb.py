@@ -12,7 +12,7 @@ def mask_without_background(img):
   """Get a mask without the background."""
   elevation_map = ski.filters.sobel(img)
   elevation_map = (elevation_map * 255).astype(np.uint8)
-  green_mask = (elevation_map[:, :, 2] < 100) & (elevation_map[:, :, 1] > 12) & (elevation_map[:, :, 0] < 150)
+  green_mask = (elevation_map[:, :, 2] < 100) & (elevation_map[:, :, 1] > 15) & (elevation_map[:, :, 0] < 150)
   anti_green_mask = (img[:, :, 2] < 100) & (img[:, :, 1] > 70) & (img[:, :, 0] < 100)
   mask = green_mask | anti_green_mask
   masked_image = np.ones_like(img) * 255
