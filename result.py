@@ -135,7 +135,7 @@ def comparison(imgs):
   plt.show()
 
 def main():
-  image_dict = load_images('samples')
+  image_dict = load_images('overtime')
   comparison(image_dict)
 
 
