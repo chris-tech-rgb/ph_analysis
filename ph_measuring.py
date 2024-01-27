@@ -129,7 +129,7 @@ def predict_pH(imgs):
   plt.show()
 
 def main():
-  image_dict = load_images('test data')
+  image_dict = load_images('all data')
   predict_pH(image_dict)
 
 
