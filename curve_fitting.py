@@ -8,7 +8,7 @@ def func(rgb, a, n1, b, n2, c, n3):
     return a * rgb[:, 0]**n1 + b * rgb[:, 1]**n2 + c * rgb[:, 2]**n3
  
 # Experimental data points
-with open('ph test data.csv') as f:
+with open('training data.csv') as f:
     reader = csv.reader(f)
     rows = [row for row in reader]
 pH_values = np.array(rows[0])
@@ -56,6 +56,6 @@ ax.tick_params(axis='z', colors='blue')
 plt.show()
 
 # Save result
-with open('calibration curve.csv', 'w') as f:
+with open('fitting curve.csv', 'w') as f:
     writer = csv.writer(f)
     writer.writerow(popt)

@@ -134,7 +134,7 @@ def comparison(imgs):
   plt.show()
 
 def main():
-  image_dict = load_images('ph test result')
+  image_dict = load_images('result data')
   comparison(image_dict)
 
 

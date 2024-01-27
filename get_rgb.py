@@ -119,7 +119,7 @@ def comparison(imgs):
   axes[1, 0].legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='center left', bbox_to_anchor=(1, 0.5))
   plt.show()
   # Save data
-  with open('ph test data.csv', 'w') as f:
+  with open('training data.csv', 'w') as f:
     writer = csv.writer(f)
     writer.writerow(pHs)
     writer.writerow(["{:.2f}".format(i[0]) for i in rgb])
@@ -127,7 +127,7 @@ def comparison(imgs):
     writer.writerow(["{:.2f}".format(i[2]) for i in rgb])
 
 def main():
-  image_dict = load_images('ph test data')
+  image_dict = load_images('training data')
   comparison(image_dict)
 
 
