@@ -1,4 +1,4 @@
-"""Standard Calibration Curve
+"""Calibration Curve
 
 Draw the calibration curve.
 """
