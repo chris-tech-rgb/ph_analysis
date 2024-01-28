@@ -12,7 +12,7 @@ def preprocess(img):
   """Remove most of the background."""
   elevation_map = ski.filters.sobel(img)
   elevation_map = (elevation_map * 255).astype(np.uint8)
-  mask_from_elevation_map = (elevation_map[:, :, 2] < 100) & (elevation_map[:, :, 1] > 15) & (elevation_map[:, :, 0] < 150)
+  mask_from_elevation_map = (elevation_map[:, :, 2] < 100) & (elevation_map[:, :, 1] > 17) & (elevation_map[:, :, 0] < 150)
   mask_from_image = (img[:, :, 2] < 100) & (img[:, :, 1] > 70) & (img[:, :, 0] < 100)
   mask = mask_from_elevation_map | mask_from_image
   masked_image = np.ones_like(img) * 255
