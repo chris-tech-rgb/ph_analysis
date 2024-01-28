@@ -5,7 +5,6 @@ import os
 import re
 import scipy.ndimage as nd
 import skimage as ski
-import statistics
 
 
 def preprocess(img):
