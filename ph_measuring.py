@@ -122,7 +122,7 @@ def predict_pH(imgs):
   axe_ph.set_ylabel('pH')
   pH = [fitting_function(i) for i in rgb]
   axe_ph.plot(range(0, number), pH, color="purple", marker="o")
-  for a, b in zip(range(0, number), pH): 
+  for a, b in zip(range(0, number), pH):
     axe_ph.text(a, b + 0.25, "pH" + str("{:.2f}".format(b)), color="purple")
   # Add legends
   axes[1, 0].legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='upper center', bbox_to_anchor=(0.05, 1.3))

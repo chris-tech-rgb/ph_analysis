@@ -109,11 +109,11 @@ def comparison(imgs):
   # Plots and errorbars of B
   blue = np.array([i[2] for i in rgb])
   p3 = axes[1, 0].plot(time, blue, color="cornflowerblue", marker="s")
-  # for a, b in zip(pHs, red): 
+  # for a, b in zip(pHs, red):
   #   axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="lightcoral")
-  # for a, b in zip(pHs, green): 
+  # for a, b in zip(pHs, green):
   #   axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="yellowgreen")
-  # for a, b in zip(pHs, blue): 
+  # for a, b in zip(pHs, blue):
   #  axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="cornflowerblue")
   # Add legends
   axes[1, 0].legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='center right')

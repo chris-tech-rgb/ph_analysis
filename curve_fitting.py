@@ -2,11 +2,11 @@ import csv
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 import numpy as np
- 
+
 # Fitting function
 def func(rgb, a, n1, b, n2, c, n3):
     return a * rgb[:, 0]**n1 + b * rgb[:, 1]**n2 + c * rgb[:, 2]**n3
- 
+
 # Experimental data points
 with open('training data.csv') as f:
     reader = csv.reader(f)
