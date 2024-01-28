@@ -1,6 +1,7 @@
 """Curve Fitting
 
 Get the relationship between pH and RGB values.
+Show this relationship as a colorbar figure.
 """
 import csv
 import matplotlib.pyplot as plt
