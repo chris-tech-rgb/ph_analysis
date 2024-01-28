@@ -79,7 +79,7 @@ def average_rgb(img):
 
 def fitting_function(rgb):
   """A fitting function of the relationship between pH and RGB."""
-  with open('fitting curve.csv') as f:
+  with open('fitting function.csv') as f:
     reader = csv.reader(f)
     rows = [row for row in reader]
   popt = [float(i) for i in rows[0]]

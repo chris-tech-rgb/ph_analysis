@@ -1,6 +1,6 @@
 """Calibration Curve
 
-Draw the calibration curve.
+Draw a calibration curve.
 """
 import matplotlib.pyplot as plt
 from natsort import natsorted

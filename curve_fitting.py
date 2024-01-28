@@ -1,7 +1,7 @@
 """Curve Fitting
 
 Get the relationship between pH and RGB values.
-Save the fitting function in 'fitting curve.csv'.
+Save the fitting function in 'fitting function.csv'.
 Show this relationship as a colorbar figure.
 """
 import csv
@@ -62,6 +62,6 @@ ax.tick_params(axis='z', colors='blue')
 plt.show()
 
 # Save result
-with open('fitting curve.csv', 'w') as f:
+with open('fitting function.csv', 'w') as f:
     writer = csv.writer(f)
     writer.writerow(popt)
