@@ -120,11 +120,11 @@ def comparison(imgs):
   axes[1, 0].legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='center right')
   # axis label
   axes[1, 0].set_ylabel('Percentage of RGB color (%)')
-  axes[1, 0].set_xlabel('Time (min)')
+  axes[1, 0].set_xlabel('Time (h)')
   plt.show()
 
 def main():
-  image_dict = load_images('ph4 over time')
+  image_dict = load_images('ph4 24h')
   comparison(image_dict)
 
 
