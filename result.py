@@ -1,3 +1,7 @@
+"""Standard Calibration Curve
+
+Draw the calibration curve.
+"""
 import matplotlib.pyplot as plt
 from natsort import natsorted
 import numpy as np
