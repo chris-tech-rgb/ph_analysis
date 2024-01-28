@@ -1,3 +1,8 @@
+"""pH Measuring
+
+This script get RGB values from images in a specific folder.
+And then, calculate the pHs according to the fitting function and RGB values of images.
+"""
 import csv
 import matplotlib.pyplot as plt
 import numpy as np

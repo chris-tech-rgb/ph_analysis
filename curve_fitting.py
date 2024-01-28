@@ -1,6 +1,7 @@
 """Curve Fitting
 
 Get the relationship between pH and RGB values.
+Save the curve function in 'fitting curve.csv'.
 Show this relationship as a colorbar figure.
 """
 import csv
