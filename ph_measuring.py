@@ -6,13 +6,13 @@ import scipy.ndimage as nd
 import skimage as ski
 from natsort import natsorted
 
-def mask_without_background(img):
-  """Get a mask of the background."""
+def preprocess(img):
+  """Remove most of the background."""
   elevation_map = ski.filters.sobel(img)
   elevation_map = (elevation_map * 255).astype(np.uint8)
-  green_mask = (elevation_map[:, :, 2] < 100) & (elevation_map[:, :, 1] > 15) & (elevation_map[:, :, 0] < 150)
-  anti_green_mask = (img[:, :, 2] < 100) & (img[:, :, 1] > 70) & (img[:, :, 0] < 100)
-  mask = green_mask | anti_green_mask
+  mask_from_elevation_map = (elevation_map[:, :, 2] < 100) & (elevation_map[:, :, 1] > 15) & (elevation_map[:, :, 0] < 150)
+  mask_from_image = (img[:, :, 2] < 100) & (img[:, :, 1] > 70) & (img[:, :, 0] < 100)
+  mask = mask_from_elevation_map | mask_from_image
   masked_image = np.ones_like(img) * 255
   masked_image[mask] = img[mask]
   return masked_image
@@ -90,7 +90,7 @@ def predict_pH(imgs):
   image_names = list(imgs.keys())
   processed_images = {}
   for i in image_names:
-    processed_images[i] = remove_background(imgs[i], mask_without_background(imgs[i]))
+    processed_images[i] = remove_background(imgs[i], preprocess(imgs[i]))
   # Display images
   fig = plt.figure(figsize=(8, 8))
   axes = np.zeros((2, number), dtype=object)
