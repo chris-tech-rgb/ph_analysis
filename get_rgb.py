@@ -1,3 +1,11 @@
+"""Get RGB From Images
+
+This script get RGB values from images in folder 'training data'.
+And then, save these data in 'training data.csv'.
+
+The script remove the background of an image before geting the average RGB values of it.
+The comprison of processed images and their RGB values is shown as a figure.
+"""
 import csv
 import matplotlib.pyplot as plt
 from natsort import natsorted
@@ -75,7 +83,7 @@ def get_rgb(img):
   return average_rgb
 
 def comparison(imgs):
-  """Display the result of comparison and the RGB value of each one."""
+  """Display the comparison of processed images and their the RGB values."""
   # Count number
   number = len(imgs)
   if number < 1:
