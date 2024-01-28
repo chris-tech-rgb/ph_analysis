@@ -1,3 +1,7 @@
+"""Curve Fitting
+
+Get the relationship between pH and RGB values.
+"""
 import csv
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
