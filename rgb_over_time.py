@@ -120,6 +120,7 @@ def comparison(imgs):
   # axis label
   axes[1, 0].set_ylabel('Percentage of RGB color (%)')
   axes[1, 0].set_xlabel('Time (h)')
+  plt.ylim(0, 100)
   plt.show()
 
 def main():
