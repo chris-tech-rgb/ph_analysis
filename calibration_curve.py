@@ -1,15 +1,16 @@
-"""pH Measuring
+"""Calibration Curve
 
-This script get RGB values from images in a specific folder.
-And then, calculate the pHs according to the fitting function and RGB values of images.
+Draw a calibration curve.
 """
-import csv
 import matplotlib.pyplot as plt
+from natsort import natsorted
 import numpy as np
 import os
+import re
 import scipy.ndimage as nd
 import skimage as ski
-from natsort import natsorted
+import statistics
+
 
 def preprocess(img):
   """Remove most of the background."""
@@ -65,7 +66,7 @@ def load_images(folder_name):
     image_dict[filename] = ski.io.imread(file_path)
   return image_dict
 
-def average_rgb(img):
+def get_rgb(img):
   """Get the average RGB of an image."""
   # Create a mask for white regions
   white_mask = np.all(img == [255, 255, 255], axis=-1)
@@ -75,67 +76,59 @@ def average_rgb(img):
   non_white_pixels = img[non_white_mask]
   # Calculate the average RGB values for non-white regions
   average_rgb = np.mean(non_white_pixels, axis=0)
-  return average_rgb
+  normalized_rgb = [i*100/255 for i in average_rgb]
+  return normalized_rgb
 
-def fitting_function(rgb):
-  """A fitting function of the relationship between pH and RGB."""
-  with open('fitting function.csv') as f:
-    reader = csv.reader(f)
-    rows = [row for row in reader]
-  popt = [float(i) for i in rows[0]]
-  return popt[0] * rgb[0]**popt[1] + popt[2] * rgb[1]**popt[3] + popt[4] * rgb[2]**popt[5]
+def rgb_stdev(imgs):
+  """Get the average RGB and standard deviation of images."""
+  rgbs = [get_rgb(i) for]
 
-def predict_pH(imgs):
-  """Display the result."""
-  # Count number
-  number = len(imgs)
-  if number < 1:
-    return
+def comparison(images):
+  """Display the result of comparison and the RGB value of each one."""
   # Remove background
-  image_names = list(imgs.keys())
-  processed_images = {}
-  for i in image_names:
-    processed_images[i] = remove_background(imgs[i], preprocess(imgs[i]))
-  # Display images
-  fig = plt.figure(figsize=(8, 8))
-  axes = np.zeros((2, number), dtype=object)
-  for i in range(0, number):
-    axes[0, i] = fig.add_subplot(2, number, 1+i)
-    axes[0, i].axis("off")
-    axes[0, i].imshow(processed_images[image_names[i]])
-    axes[0, i].set_title(image_names[i][:-4])
-  axes[1, 0] = fig.add_subplot(2, 1, 2)
+  processed_images = []
+  processed_ph4_images = [remove_background(i, preprocess(i)) for i in images['4']]
+  processed_images.append(processed_ph4_images)
   # Show RGB values
+  pHs = [4]
   rgb = []
-  for i in image_names:
-    rgb.append(average_rgb(processed_images[i]))
-  # Show values of R
+  sd = []
+  for i in processed_images:
+    color, st_dev = rgb_stdev(i)
+    rgb.append(color)
+    sd.append(st_dev)
+  # Plots and errorbars of R
   red = np.array([i[0] for i in rgb])
-  p1 = axes[1, 0].plot(range(0, number), red, color="lightcoral", marker=".", linestyle=":")
-  # Show values of G
+  red_sd = [i[0] for i in sd]
+  p1 = plt.plot(pHs, red, color="lightcoral", marker="o")
+  plt.errorbar(pHs, red, red_sd, color="lightcoral", capsize=5)
+  # Plots and errorbars of G
   green = np.array([i[1] for i in rgb])
-  p2 = axes[1, 0].plot(range(0, number), green, color="yellowgreen", marker="x", linestyle=":")
-  # Show values of B
+  green_sd = [i[1] for i in sd]
+  p2 = plt.plot(pHs, green, color="yellowgreen", marker="D")
+  plt.errorbar(pHs, green, green_sd, color="yellowgreen", capsize=5)
+  # Plots and errorbars of B
   blue = np.array([i[2] for i in rgb])
-  p3 = axes[1, 0].plot(range(0, number), blue, color="blue", marker="+", linestyle=":")
-  # Hide x axis
-  axes[1, 0].axes.get_xaxis().set_visible(False)
-  # Y label
-  axes[1, 0].set_ylabel('RGB')
-  # Show predicted value of pH
-  axe_ph = axes[1, 0].twinx()
-  axe_ph.set_ylabel('pH')
-  pH = [fitting_function(i) for i in rgb]
-  axe_ph.plot(range(0, number), pH, color="purple", marker="o")
-  for a, b in zip(range(0, number), pH):
-    axe_ph.text(a, b + 0.25, "pH" + str("{:.2f}".format(b)), color="purple")
+  blue_sd = [i[2] for i in sd]
+  p3 = plt.plot(pHs, blue, color="cornflowerblue", marker="s")
+  plt.errorbar(pHs, blue, blue_sd, color="cornflowerblue", capsize=5)
+  # for a, b in zip(pHs, red):
+  #   axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="lightcoral")
+  # for a, b in zip(pHs, green):
+  #   axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="yellowgreen")
+  # for a, b in zip(pHs, blue):
+  #  axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="cornflowerblue")
   # Add legends
-  axes[1, 0].legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='upper center', bbox_to_anchor=(0.05, 1.3))
+  plt.legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='upper right')
+  # axis label
+  plt.set_ylabel('Percentage of RGB color (%)')
+  plt.set_xlabel('pH')
   plt.show()
 
 def main():
-  image_dict = load_images('compare')
-  predict_pH(image_dict)
+  ph4_images = load_images('calibration curve\\4.0')
+  images = {'4': ph4_images}
+  comparison(images)
 
 
 if __name__ == "__main__":

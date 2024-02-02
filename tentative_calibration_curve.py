@@ -138,7 +138,7 @@ def comparison(imgs):
   plt.show()
 
 def main():
-  image_dict = load_images('result data')
+  image_dict = load_images('tentative calibration curve')
   comparison(image_dict)
 
 
