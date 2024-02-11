@@ -60,11 +60,11 @@ def load_images(folder_name):
   folder_path = os.path.join(os.getcwd(), folder_name)
   list_files = os.listdir(folder_path)
   list_files = natsorted(list_files)
-  image_dict = {}
+  images = []
   for filename in list_files:
     file_path = os.path.join(folder_path, filename)
-    image_dict[filename] = ski.io.imread(file_path)
-  return image_dict
+    images.append(ski.io.imread(file_path))
+  return images
 
 def get_rgb(img):
   """Get the average RGB of an image."""
@@ -81,13 +81,19 @@ def get_rgb(img):
 
 def rgb_stdev(imgs):
   """Get the average RGB and standard deviation of images."""
-  rgbs = [get_rgb(i) for]
+  rgbs = [get_rgb(i) for i in imgs]
+  rs = [i[0] for i in rgbs]
+  gs = [i[1] for i in rgbs]
+  bs = [i[2] for i in rgbs]
+  average_rgb = [statistics.mean(rs), statistics.mean(gs), statistics.mean(bs)]
+  st_dev = [statistics.stdev(rs), statistics.stdev(gs), statistics.stdev(bs)]
+  return average_rgb, st_dev
 
 def comparison(images):
   """Display the result of comparison and the RGB value of each one."""
   # Remove background
   processed_images = []
-  processed_ph4_images = [remove_background(i, preprocess(i)) for i in images['4']]
+  processed_ph4_images = [remove_background(i, preprocess(i)) for i in images[0]]
   processed_images.append(processed_ph4_images)
   # Show RGB values
   pHs = [4]
@@ -121,13 +127,15 @@ def comparison(images):
   # Add legends
   plt.legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='upper right')
   # axis label
-  plt.set_ylabel('Percentage of RGB color (%)')
-  plt.set_xlabel('pH')
+  # plt.set_ylabel('Percentage of RGB color (%)')
+  # plt.set_xlabel('pH')
+  plt.axis([4, 8, 0, 100])
   plt.show()
 
 def main():
+  images = []
   ph4_images = load_images('calibration curve\\4.0')
-  images = {'4': ph4_images}
+  images.append(ph4_images)
   comparison(images)
 
 
