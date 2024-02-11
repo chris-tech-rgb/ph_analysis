@@ -129,7 +129,7 @@ def comparison(images):
   # axis label
   # plt.set_ylabel('Percentage of RGB color (%)')
   # plt.set_xlabel('pH')
-  plt.axis([4, 8, 0, 100])
+  plt.axis([3.8, 8.2, 0, 100])
   plt.show()
 
 def main():
