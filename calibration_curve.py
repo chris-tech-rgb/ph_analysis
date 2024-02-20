@@ -3,14 +3,13 @@
 Draw a calibration curve.
 """
 import matplotlib.pyplot as plt
-from natsort import natsorted
 import numpy as np
 import os
-import re
 import scipy.ndimage as nd
 import skimage as ski
 import statistics
-
+from matplotlib.ticker import MaxNLocator
+from natsort import natsorted
 
 def preprocess(img):
   """Remove most of the background."""
@@ -93,10 +92,10 @@ def comparison(images):
   """Display the result of comparison and the RGB value of each one."""
   # Remove background
   processed_images = []
-  processed_ph4_images = [remove_background(i, preprocess(i)) for i in images[0]]
-  processed_images.append(processed_ph4_images)
+  for i in range(0, 2):
+    processed_images.append([remove_background(j, preprocess(j)) for j in images[i]])
   # Show RGB values
-  pHs = [4]
+  pHs = [4, 5]
   rgb = []
   sd = []
   for i in processed_images:
@@ -118,24 +117,17 @@ def comparison(images):
   blue_sd = [i[2] for i in sd]
   p3 = plt.plot(pHs, blue, color="cornflowerblue", marker="s")
   plt.errorbar(pHs, blue, blue_sd, color="cornflowerblue", capsize=5)
-  # for a, b in zip(pHs, red):
-  #   axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="lightcoral")
-  # for a, b in zip(pHs, green):
-  #   axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="yellowgreen")
-  # for a, b in zip(pHs, blue):
-  #  axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="cornflowerblue")
   # Add legends
   plt.legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='upper right')
-  # axis label
-  # plt.set_ylabel('Percentage of RGB color (%)')
-  # plt.set_xlabel('pH')
+  # axis range
   plt.axis([3.8, 8.2, 0, 100])
+  plt.gca().xaxis.set_major_locator(MaxNLocator(integer=True))
   plt.show()
 
 def main():
   images = []
-  ph4_images = load_images('calibration curve\\4.0')
-  images.append(ph4_images)
+  for i in range(4, 6):
+    images.append(load_images('calibration curve//' + str(i)))
   comparison(images)
 
 
