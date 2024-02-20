@@ -134,7 +134,7 @@ def predict_pH(imgs):
   plt.show()
 
 def main():
-  image_dict = load_images('compare')
+  image_dict = load_images('calibration curve//4.0')
   predict_pH(image_dict)
 
 
