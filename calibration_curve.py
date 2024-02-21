@@ -122,6 +122,8 @@ def comparison(images):
   # axis range
   plt.axis([3.8, 8.2, 0, 100])
   plt.gca().xaxis.set_major_locator(MaxNLocator(integer=True))
+  plt.xlabel("pH")
+  plt.ylabel("Percentage of RGB color(%)")
   plt.show()
 
 def main():
