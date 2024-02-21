@@ -8,7 +8,7 @@ import os
 import scipy.ndimage as nd
 import skimage as ski
 import statistics
-from matplotlib.ticker import MaxNLocator
+from matplotlib.ticker import (MaxNLocator, MultipleLocator)
 from natsort import natsorted
 
 def preprocess(img):
@@ -122,6 +122,8 @@ def comparison(images):
   # axis range
   plt.axis([3.8, 8.2, 0, 100])
   plt.gca().xaxis.set_major_locator(MaxNLocator(integer=True))
+  plt.gca().xaxis.set_minor_locator(MultipleLocator(0.5))
+  plt.gca().yaxis.set_minor_locator(MultipleLocator(10))
   plt.xlabel("pH")
   plt.ylabel("Percentage of RGB color(%)")
   plt.show()
