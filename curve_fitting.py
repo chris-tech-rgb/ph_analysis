@@ -11,12 +11,12 @@ import numpy as np
 
 # Fitting function
 def func(rgb, a, n1, b, n2, c, n3):
-    return a * rgb[:, 0]**n1 + b * rgb[:, 1]**n2 + c * rgb[:, 2]**n3
+  return a * rgb[:, 0]**n1 + b * rgb[:, 1]**n2 + c * rgb[:, 2]**n3
 
 # Experimental data points
 with open('training data.csv') as f:
-    reader = csv.reader(f)
-    rows = [row for row in reader]
+  reader = csv.reader(f)
+  rows = [row for row in reader]
 pH_values = np.array(rows[0])
 rgb_values = np.array([list(t) for t in list(zip([float(i) for i in rows[2]], [float(i) for i in rows[4]], [float(i) for i in rows[6]]))])
 r_values = rgb_values[:, 0]
@@ -63,5 +63,5 @@ plt.show()
 
 # Save result
 with open('fitting function.csv', 'w') as f:
-    writer = csv.writer(f)
-    writer.writerow(popt)
+  writer = csv.writer(f)
+  writer.writerow(popt)
