@@ -92,10 +92,10 @@ def comparison(images):
   """Display the result of comparison and the RGB value of each one."""
   # Remove background
   processed_images = []
-  for i in range(0, 3):
+  for i in range(0, 4):
     processed_images.append([remove_background(j, preprocess(j)) for j in images[i]])
   # Show RGB values
-  pHs = [4, 5, 7]
+  pHs = [4, 5, 7, 8]
   rgb = []
   sd = []
   for i in processed_images:
@@ -129,6 +129,7 @@ def main():
   for i in range(4, 6):
     images.append(load_images('calibration curve//' + str(i)))
   images.append(load_images('calibration curve//' + str(7)))
+  images.append(load_images('calibration curve//' + str(8)))
   comparison(images)
 
 
