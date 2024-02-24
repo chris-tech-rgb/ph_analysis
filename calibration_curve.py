@@ -75,9 +75,11 @@ def comparison(images):
   blue_sd = [i[2] for i in sd]
   p3 = plt.plot(pHs, blue, color="cornflowerblue", marker="s")
   plt.errorbar(pHs, blue, blue_sd, color="cornflowerblue", capsize=5)
+  # Color bars
+  plt.bar(pHs, [100] * 6, width=0.1, color=[(i[0]/100, i[1]/100, i[2]/100, 0.2) for i in rgb])
   # Add legends
   plt.legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='upper right')
-  # axis range
+  # Axis range
   plt.axis([3.8, 9.2, 0, 100])
   plt.gca().xaxis.set_major_locator(MaxNLocator(integer=True))
   plt.gca().xaxis.set_minor_locator(MultipleLocator(0.5))
