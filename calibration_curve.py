@@ -50,10 +50,10 @@ def comparison(images):
   """Display the result of comparison and the RGB value of each one."""
   # Remove background
   processed_images = []
-  for i in range(0, 5):
+  for i in range(0, 6):
     processed_images.append([ip.remove_background(j, ip.preprocess(j)) for j in images[i]])
   # Show RGB values
-  pHs = [4, 5, 6, 7, 8]
+  pHs = [4, 5, 6, 7, 8, 9]
   rgb = []
   sd = []
   for i in processed_images:
@@ -78,7 +78,7 @@ def comparison(images):
   # Add legends
   plt.legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='upper right')
   # axis range
-  plt.axis([3.8, 8.2, 0, 100])
+  plt.axis([3.8, 9.2, 0, 100])
   plt.gca().xaxis.set_major_locator(MaxNLocator(integer=True))
   plt.gca().xaxis.set_minor_locator(MultipleLocator(0.5))
   plt.gca().yaxis.set_minor_locator(MultipleLocator(10))
@@ -88,7 +88,7 @@ def comparison(images):
 
 def main():
   images = []
-  for i in range(4, 9):
+  for i in range(4, 10):
     images.append(load_images('calibration curve//' + str(i)))
   comparison(images)
 
