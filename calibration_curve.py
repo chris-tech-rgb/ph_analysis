@@ -76,7 +76,7 @@ def comparison(images):
   p3 = plt.plot(pHs, blue, color="cornflowerblue", marker="s")
   plt.errorbar(pHs, blue, blue_sd, color="cornflowerblue", capsize=5)
   # Color bars
-  # plt.bar(pHs, [100] * 7, width=0.1, color=[(i[0]/100, i[1]/100, i[2]/100, 0.2) for i in rgb])
+  plt.bar(pHs, [100] * 7, width=0.1, color=[(i[0]/100, i[1]/100, i[2]/100, 0.2) for i in rgb])
   # Add legends
   plt.legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='upper right')
   # Axis range

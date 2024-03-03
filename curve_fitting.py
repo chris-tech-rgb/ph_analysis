@@ -24,7 +24,7 @@ g_values = rgb_values[:, 1]
 b_values = rgb_values[:, 2]
 
 # Perform the curve-fit
-popt, pcov = curve_fit(func, rgb_values, pH_values, maxfev = 20000)
+popt, pcov = curve_fit(func, rgb_values, pH_values, maxfev = 200000)
 a, n1, b, n2, c, n3 = popt
 print("Fitting function:\npH = " + str(a) + " x R^(" + str(n1) + ") + " + str(b) + " x G^(" + str(n2) + ") + " + str(c) + " x B^(" + str(n3) + ")")
 
