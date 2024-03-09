@@ -61,7 +61,7 @@ def predict_pH(imgs):
     axes[0, i] = fig.add_subplot(2, number, 1+i)
     axes[0, i].axis("off")
     axes[0, i].imshow(processed_images[image_names[i]])
-    axes[0, i].set_title(image_names[i][:-4])
+    axes[0, i].set_title(image_names[i][:-4].split(' ')[0])
   axes[1, 0] = fig.add_subplot(2, 1, 2)
   # Show RGB values
   rgb = []
@@ -92,7 +92,7 @@ def predict_pH(imgs):
   plt.show()
 
 def main():
-  image_dict = load_images('test data')
+  image_dict = load_images('samples')
   predict_pH(image_dict)
 
 
