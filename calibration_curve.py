@@ -6,6 +6,7 @@ import image_processing as ip
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import pandas as pd
 import skimage as ski
 import statistics
 from matplotlib.ticker import (MaxNLocator, MultipleLocator)
@@ -60,6 +61,11 @@ def comparison(images, ph_range):
     color, st_dev = rgb_stdev(i)
     rgb.append(color)
     sd.append(st_dev)
+  # Export as excel
+  df = pd.DataFrame([[a] + b for a, b in zip(pHs, rgb)],
+  index=pHs,
+  columns=['pH', 'R', 'G', 'B'])
+  df.to_excel("pH calibration curve.xlsx", index=False)
   # Plots and errorbars of R
   red = np.array([i[0] for i in rgb])
   red_sd = [i[0] for i in sd]
