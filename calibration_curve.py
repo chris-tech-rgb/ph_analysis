@@ -62,9 +62,8 @@ def comparison(images, ph_range):
     rgb.append(color)
     sd.append(st_dev)
   # Export as excel
-  df = pd.DataFrame([[a] + b for a, b in zip(pHs, rgb)],
-  index=pHs,
-  columns=['pH', 'R', 'G', 'B'])
+  df = pd.DataFrame([[a] + b + c for a, b, c in zip(pHs, rgb, sd)],
+  columns=['pH', 'R', 'G', 'B', 'SD R', 'SD G', 'SD B'])
   df.to_excel("pH calibration curve.xlsx", index=False)
   # Plots and errorbars of R
   red = np.array([i[0] for i in rgb])
