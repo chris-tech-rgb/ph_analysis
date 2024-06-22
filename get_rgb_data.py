@@ -57,7 +57,7 @@ def comparison(imgs):
     axes[0, i] = fig.add_subplot(2, number, 1+i)
     axes[0, i].axis("off")
     axes[0, i].imshow(processed_images[image_names[i]])
-    axes[0, i].set_title(image_names[i][:-4])
+    axes[0, i].set_title(image_names[i][:-7])
   axes[1, 0] = fig.add_subplot(2, 1, 2)
   # Show RGB values
   pHs = np.array([float(re.findall(r'\d+\.\d+', i)[0]) for i in image_names])
@@ -66,13 +66,13 @@ def comparison(imgs):
     rgb.append(get_rgb(processed_images[i]))
   # Plots of R
   red = np.array([i[0] for i in rgb])
-  p1 = axes[1, 0].plot(pHs, red, color="lightcoral", marker="o")
+  p1 = axes[1, 0].plot(pHs, red, color="lightcoral", linestyle='None', marker="o")
   # Plots of G
   green = np.array([i[1] for i in rgb])
-  p2 = axes[1, 0].plot(pHs, green, color="yellowgreen", marker="D")
+  p2 = axes[1, 0].plot(pHs, green, color="yellowgreen", linestyle='None', marker="D")
   # Plots of B
   blue = np.array([i[2] for i in rgb])
-  p3 = axes[1, 0].plot(pHs, blue, color="cornflowerblue", marker="s")
+  p3 = axes[1, 0].plot(pHs, blue, color="cornflowerblue", linestyle='None', marker="s")
   # Show RGB values
   for a, b in zip(pHs, red):
     axes[1, 0].text(a, b, str("{:.2f}".format(b)), color="lightcoral")
