@@ -8,6 +8,7 @@ import image_processing as ip
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import pandas as pd
 import skimage as ski
 from natsort import natsorted
 
@@ -57,11 +58,14 @@ def predict_pH(imgs):
   # Display images
   fig = plt.figure(figsize=(8, 8))
   axes = np.zeros((2, number), dtype=object)
+  measured = []
   for i in range(0, number):
     axes[0, i] = fig.add_subplot(2, number, 1+i)
     axes[0, i].axis("off")
     axes[0, i].imshow(processed_images[image_names[i]])
-    axes[0, i].set_title(image_names[i][:-4].split(' ')[0])
+    measured_concentration = image_names[i][:-4].split(' ')[0]
+    measured.append(measured_concentration)
+    axes[0, i].set_title(measured_concentration)
   axes[1, 0] = fig.add_subplot(2, 1, 2)
   # Show RGB values
   rgb = []
@@ -90,6 +94,10 @@ def predict_pH(imgs):
   # Add legends
   axes[1, 0].legend((p1[0], p2[0], p3[0]), ("R", "G", "B"), loc='upper center', bbox_to_anchor=(0.05, 1.3))
   plt.show()
+  # Export as excel
+  df = pd.DataFrame([[a] + [float("{:.2f}".format(b))] + c.tolist() for a, b, c in zip(measured, pH, rgb)],
+  columns=['Measured pH', 'Predicted pH', 'R', 'G', 'B'])
+  df.to_excel("pH predicting.xlsx", index=False)
 
 def main():
   image_dict = load_images('training data')
