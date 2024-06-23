@@ -97,7 +97,7 @@ def predict_pH(imgs):
   # Export as excel
   df = pd.DataFrame([[a] + [float("{:.2f}".format(b))] + c.tolist() for a, b, c in zip(measured, pH, rgb)],
   columns=['Measured pH', 'Predicted pH', 'R', 'G', 'B'])
-  df.to_excel("pH predicting.xlsx", index=False)
+  df.to_excel("excel/pH predicting.xlsx", index=False)
 
 def main():
   image_dict = load_images('training data')
