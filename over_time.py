@@ -2,6 +2,7 @@ import image_processing as ip
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import pandas as pd
 import re
 import skimage as ski
 from natsort import natsorted
@@ -73,6 +74,10 @@ def comparison(imgs):
   axes[1, 0].set_xlabel('Time (h)')
   plt.ylim(0, 100)
   plt.show()
+  # Export as excel
+  df = pd.DataFrame([[4] + [a] + b for a, b in zip(time, rgb)],
+  columns=['pH', 'Time (h)', 'R (%)', 'G (%)', 'B (%)'])
+  df.to_excel("excel/pH4 over time.xlsx", index=False)
 
 def main():
   image_dict = load_images('ph4 6h')
