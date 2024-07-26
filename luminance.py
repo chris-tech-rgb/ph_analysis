@@ -1,6 +1,7 @@
 """Get Luminance From Images
 """
 import image_processing as ip
+import math
 import numpy as np
 import os
 import pandas as pd
@@ -47,13 +48,14 @@ def get_data(imgs):
   for i in image_names:
     rgb.append(get_rgb(processed_images[i]))
   # Save data
-  luminance = ["{:.2f}".format(0.299*i[0] + 0.587*i[1] + 0.114*i[2]) for i in rgb]
-  df = pd.DataFrame([[a] + [b] for a, b in zip(pHs, luminance)],
-                    columns=['pH', 'Luminance'])
+  luminance = [(0.299*i[0] + 0.587*i[1] + 0.114*i[2]) for i in rgb]
+  log = [math.log1p(i) for i in luminance]
+  df = pd.DataFrame([[a] + ["{:.2f}".format(b)] + ["{:.2f}".format(c)] for a, b, c in zip(pHs, luminance, log)],
+                    columns=['pH', 'Luminance', 'Logarithmic luminance'])
   df.to_excel("excel/luminance.xlsx", index=False)
 
 def main():
-  image_dict = load_images('training data')
+  image_dict = load_images('calibration curve')
   get_data(image_dict)
 
 
