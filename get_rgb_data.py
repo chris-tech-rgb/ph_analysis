@@ -92,7 +92,7 @@ def comparison(imgs):
     writer.writerow(["{:.2f}".format(i[2]) for i in rgb])
 
 def main():
-  image_dict = load_images('training data')
+  image_dict = load_images('calibration curve')
   comparison(image_dict)
 
 
